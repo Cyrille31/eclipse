@@ -39,6 +39,11 @@ body{background:var(--paper);color:var(--ink);
 .fig-n{font-size:26px;font-weight:300;line-height:1;display:block}
 .fig-l{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:9.5px;
   letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);display:block;margin-top:7px}
+.install{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10.5px;
+  letter-spacing:.16em;text-transform:uppercase;font-weight:500;padding:9px 16px;
+  background:var(--oxide);color:#F2EFE6;border:0;cursor:pointer;margin:0 0 20px}
+.install:hover{background:#7A170F}
+.install[hidden]{display:none}
 .plate{position:relative;background:var(--plate);border:1px solid var(--rule)}
 #map{display:block;width:100%;height:auto;touch-action:none;cursor:crosshair;
   -webkit-touch-callout:none;user-select:none;-webkit-user-select:none}
@@ -149,6 +154,8 @@ body{background:var(--paper);color:var(--ink);
     <div><span class="fig-n mono" id="fL">—</span><span class="fig-l">plus longue</span></div>
   </div>
 
+  <button class="install" id="bInstall" hidden>Installer l'application</button>
+
   <div class="plate">
     <canvas id="map"></canvas>
     <div class="ctl modes">
@@ -201,7 +208,7 @@ body{background:var(--paper);color:var(--ink);
     <div><span class="k">Type</span><span class="v" id="cType">—</span></div>
   </div>
 
-  <p class="sig-page"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel · version 1.0</p>
+  <p class="sig-page"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel · version 1.1</p>
 
   <div class="help" id="help" hidden>
    <div class="help-box" role="dialog" aria-modal="true" aria-label="Mode d'emploi">
@@ -210,9 +217,10 @@ body{background:var(--paper);color:var(--ink);
 
     <p>Toutes les bandes de totalité qui balaient la Terre entre l'an 1000 et l'an 3000, tracées à leur largeur réelle. Les encres se superposent là où le cône d'ombre est repassé.</p>
 
-    <p class="fine">Version 1.0 · application accessible à l'adresse
+    <p class="fine">Version 1.1 · application accessible à l'adresse
        <a href="https://cyrille31.github.io/eclipse/">cyrille31.github.io/eclipse</a>,
        où elle peut être installée sur l'écran d'accueil et consultée hors ligne.</p>
+    <p class="fine">Un bouton <strong>Installer l'application</strong> apparaît sous le titre lorsque le navigateur le permet. S'il reste absent — Chrome ne propose spontanément l'installation qu'une fois, puis se tait trois mois, et se souvient d'une désinstallation — passez par le menu à trois points du navigateur, entrée « Ajouter à l'écran d'accueil » ou « Installer l'application », qui reste toujours disponible. En dernier recours, ouvrez les paramètres du site par l'icône à gauche de l'adresse et effacez ses données : cela remet à zéro le cache et les compteurs d'installation.</p>
 
     <h3>Se déplacer</h3>
     <dl>
@@ -254,7 +262,7 @@ body{background:var(--paper);color:var(--ink);
     <p class="fine">Les dates antérieures au 15 octobre 1582 sont données dans le calendrier julien, comme dans les canons d'éclipses. Au-delà de 2050 et en deçà de 1600, ΔT n'est plus mesuré mais extrapolé : la date et la durée restent fiables, la longitude peut se décaler de plusieurs dizaines de kilomètres. C'est cette incertitude, et non le calcul, qui interdit d'aller beaucoup plus loin — vers −3000 elle atteint plusieurs degrés de rotation terrestre, soit un changement de continent.</p>
     <p class="fine">Fond de carte Natural Earth au 1:50 M. Villes : 19 645 agglomérations de plus de 20 000 habitants, d'après GeoNames. Fuseaux horaires par tz-lookup (domaine public) et par la base tzdata du navigateur.</p>
 
-    <p class="sig"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel — tous droits réservés · version 1.0</p>
+    <p class="sig"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel — tous droits réservés · version 1.1</p>
    </div>
   </div>
 </div>
@@ -1151,6 +1159,26 @@ if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
 }
 </script>
 <script>
+/* Bouton d'installation. Chrome n'emet 'beforeinstallprompt' que si le site est
+   installable et pas deja installe; on capte l'evenement, on montre le bouton,
+   et on ne declenche la demande qu'au clic, comme l'exige le navigateur. */
+(function(){
+  var attente=null, bouton=document.getElementById('bInstall');
+  window.addEventListener('beforeinstallprompt',function(ev){
+    ev.preventDefault(); attente=ev; bouton.hidden=false;
+  });
+  bouton.addEventListener('click',function(){
+    if(!attente) return;
+    bouton.hidden=true;
+    attente.prompt();
+    attente.userChoice.then(function(r){
+      if(r.outcome!=='accepted') bouton.hidden=false;
+      attente=null;
+    });
+  });
+  window.addEventListener('appinstalled',function(){ bouton.hidden=true; attente=null; });
+})();
+
 /* Installation hors ligne. Le service worker n'est possible qu'en HTTPS : sur
    un fichier ouvert localement, rien ne s'enregistre et l'application
    fonctionne exactement comme avant. */
