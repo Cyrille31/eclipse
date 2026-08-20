@@ -70,6 +70,8 @@ body{background:var(--paper);color:var(--ink);
 .sig-page{margin:34px 0 0;padding-top:16px;border-top:1px solid var(--rule);
   display:flex;align-items:center;gap:8px;font-family:"IBM Plex Mono",ui-monospace,monospace;
   font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft)}
+.sig-note{margin:8px 0 0;font-size:12px;line-height:1.5;color:var(--ink-soft);
+  font-weight:300;max-width:66ch}
 .mark{position:absolute;right:12px;bottom:52px;display:flex;align-items:center;gap:6px;
   font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:9.5px;letter-spacing:.14em;
   color:var(--ink-soft);opacity:.75;pointer-events:none}
@@ -208,7 +210,8 @@ body{background:var(--paper);color:var(--ink);
     <div><span class="k">Type</span><span class="v" id="cType">—</span></div>
   </div>
 
-  <p class="sig-page"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel · version 1.1</p>
+  <p class="sig-page"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel · version 1.2</p>
+  <p class="sig-note">Conçue, spécifiée et validée par CGExcel. Code écrit avec l'assistance d'un modèle de langage (Claude, Anthropic), sous contrôle et responsabilité humaine. Les éclipses affichées ne sont pas produites par une IA : elles résultent d'un calcul astronomique déterministe.</p>
 
   <div class="help" id="help" hidden>
    <div class="help-box" role="dialog" aria-modal="true" aria-label="Mode d'emploi">
@@ -217,7 +220,7 @@ body{background:var(--paper);color:var(--ink);
 
     <p>Toutes les bandes de totalité qui balaient la Terre entre l'an 1000 et l'an 3000, tracées à leur largeur réelle. Les encres se superposent là où le cône d'ombre est repassé.</p>
 
-    <p class="fine">Version 1.1 · application accessible à l'adresse
+    <p class="fine">Version 1.2 · application accessible à l'adresse
        <a href="https://cyrille31.github.io/eclipse/">cyrille31.github.io/eclipse</a>,
        où elle peut être installée sur l'écran d'accueil et consultée hors ligne.</p>
     <p class="fine">Un bouton <strong>Installer l'application</strong> apparaît sous le titre lorsque le navigateur le permet. S'il reste absent — Chrome ne propose spontanément l'installation qu'une fois, puis se tait trois mois, et se souvient d'une désinstallation — passez par le menu à trois points du navigateur, entrée « Ajouter à l'écran d'accueil » ou « Installer l'application », qui reste toujours disponible. En dernier recours, ouvrez les paramètres du site par l'icône à gauche de l'adresse et effacez ses données : cela remet à zéro le cache et les compteurs d'installation.</p>
@@ -257,12 +260,17 @@ body{background:var(--paper);color:var(--ink);
     <h3>Éclipses hybrides</h3>
     <p>Une éclipse est totale quand le cône d'ombre de la Lune atteint le sol, annulaire quand il s'arrête avant et laisse voir un anneau de Soleil. Comme la Terre est ronde, une même éclipse peut être annulaire au lever et au coucher, quand le sol est plus éloigné, et totale au milieu du parcours, quand il se rapproche de quelques milliers de kilomètres. C'est une hybride, et elle est rare : quelques pourcents des éclipses centrales. <strong>Seuls les tronçons réellement totaux sont tracés ici</strong> ; les portions annulaires sont écartées, d'où les bandes qui commencent ou s'arrêtent en pleine mer.</p>
 
+    <h3>Conception et outils</h3>
+    <p>Cette application a été conçue, spécifiée et validée par CGExcel. Le choix des méthodes, les contrôles numériques contre les éphémérides publiées et la recette finale relèvent de l'auteur, qui en assume la responsabilité éditoriale.</p>
+    <p>Son code a été écrit avec l'assistance d'un modèle de langage, Claude d'Anthropic, dans un dialogue itératif où chaque correction a été vérifiée contre des valeurs de référence avant d'être retenue. La mention est faite par souci de transparence, non par obligation : les règles européennes de transparence sur l'IA visent les contenus qu'un système génératif produit à destination du public, non la manière dont un logiciel a été développé.</p>
+    <p><strong>Les éclipses affichées ne sont, elles, produites par aucune IA.</strong> Ce sont les résultats d'un calcul astronomique déterministe et reproductible, décrit ci-dessous : mêmes séries, mêmes équations, mêmes nombres à chaque exécution.</p>
+
     <h3>Ce que vaut le calcul</h3>
     <p class="fine">Positions apparentes géocentriques du Soleil et de la Lune par les séries VSOP87 et ELP2000, intersection de l'axe du cône avec l'ellipsoïde WGS84, entrée et sortie de l'ombre affinées par dichotomie, limites nord et sud obtenues comme l'enveloppe réellement balayée : un lieu appartient à la bande s'il se trouve dans le cône à un instant quelconque du passage, et non à celui où l'axe le frôle. La distinction est négligeable quand le Soleil est haut, décisive au ras de l'horizon, où l'ombre instantanée s'étire sur des milliers de kilomètres très en avant et en arrière du centre. Échantillonnage à pas constant de 200 km. Contrôle sur les éclipses de référence : environ 20 km d'écart sur la ligne centrale, 2 s sur la durée, 2 km sur la largeur — 116 km calculés contre 115 publiés en 2017, 200 contre 198 en 2024, 259 contre 256 en 1973. Le résidu de 2 s vient de la Lune traitée comme une sphère de 1 737,4 km, alors que ses vallées polaires laissent filtrer la lumière un instant de plus.</p>
     <p class="fine">Les dates antérieures au 15 octobre 1582 sont données dans le calendrier julien, comme dans les canons d'éclipses. Au-delà de 2050 et en deçà de 1600, ΔT n'est plus mesuré mais extrapolé : la date et la durée restent fiables, la longitude peut se décaler de plusieurs dizaines de kilomètres. C'est cette incertitude, et non le calcul, qui interdit d'aller beaucoup plus loin — vers −3000 elle atteint plusieurs degrés de rotation terrestre, soit un changement de continent.</p>
     <p class="fine">Fond de carte Natural Earth au 1:50 M. Villes : 19 645 agglomérations de plus de 20 000 habitants, d'après GeoNames. Fuseaux horaires par tz-lookup (domaine public) et par la base tzdata du navigateur.</p>
 
-    <p class="sig"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel — tous droits réservés · version 1.1</p>
+    <p class="sig"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel — tous droits réservés · version 1.2</p>
    </div>
   </div>
 </div>
