@@ -210,7 +210,7 @@ body{background:var(--paper);color:var(--ink);
     <div><span class="k">Type</span><span class="v" id="cType">—</span></div>
   </div>
 
-  <p class="sig-page"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel · version 2.1</p>
+  <p class="sig-page"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel · version 2.2</p>
   <p class="sig-note">Conçue, spécifiée et validée par CGExcel. Code écrit avec l'assistance d'un modèle de langage (Claude, Anthropic), sous contrôle et responsabilité humaine. Les éclipses affichées ne sont pas produites par une IA : elles résultent d'un calcul astronomique déterministe.</p>
 
   <div class="help" id="help" hidden>
@@ -220,7 +220,7 @@ body{background:var(--paper);color:var(--ink);
 
     <p>Toutes les bandes de totalité qui balaient la Terre entre l'an 1000 et l'an 3000, tracées à leur largeur réelle. Les encres se superposent là où le cône d'ombre est repassé.</p>
 
-    <p class="fine">Version 2.1 · application accessible à l'adresse
+    <p class="fine">Version 2.2 · application accessible à l'adresse
        <a href="https://cyrille31.github.io/eclipse/">cyrille31.github.io/eclipse</a>,
        où elle peut être installée sur l'écran d'accueil et consultée hors ligne.</p>
     <p class="fine">Un bouton <strong>Installer l'application</strong> apparaît sous le titre lorsque le navigateur le permet. S'il reste absent — Chrome ne propose spontanément l'installation qu'une fois, puis se tait trois mois, et se souvient d'une désinstallation — passez par le menu à trois points du navigateur, entrée « Ajouter à l'écran d'accueil » ou « Installer l'application », qui reste toujours disponible. En dernier recours, ouvrez les paramètres du site par l'icône à gauche de l'adresse et effacez ses données : cela remet à zéro le cache et les compteurs d'installation.</p>
@@ -242,7 +242,7 @@ body{background:var(--paper);color:var(--ink);
 
     <h3>La zone de partialité</h3>
     <p>Choisir une éclipse fait apparaître, en gris très clair, toute la région d'où le Soleil apparaissait entamé — une calotte qui couvre souvent un tiers de la planète, quand la bande de totalité n'en est qu'un fil. Appuyez n'importe où dedans pour lire la part du disque masquée à cet endroit.</p>
-    <p class="fine">Cette région est calculée maille par maille, au pas de deux degrés, en cherchant pour chacune si le Soleil y est entamé à un instant quelconque. Son bord est donc dessiné en escalier, d'environ 200 km : invisible à l'échelle du globe, perceptible en zoomant fort.</p>
+    <p class="fine">Cette région est calculée maille par maille, au pas de deux degrés, les mailles du pourtour étant ensuite subdivisées au demi-degré. Le bord reste dessiné en escalier, mais d'une cinquantaine de kilomètres seulement.</p>
 
     <h3>Le peigne</h3>
     <p>Chaque trait est une éclipse, placée à sa date, de hauteur proportionnelle à sa durée de totalité. Il commande la fenêtre : <strong>la carte n'affiche que les éclipses que le peigne montre</strong>, et les compteurs de tête portent sur cette même fenêtre. Molette ou pincement pour resserrer, glissé pour parcourir les mille ans passés et les mille ans à venir. <span class="mono">Siècle</span> revient au cadrage 1926-2026, <span class="mono">Tout</span> déplie les deux millénaires.</p>
@@ -275,7 +275,7 @@ body{background:var(--paper);color:var(--ink);
     <p class="fine">Les dates antérieures au 15 octobre 1582 sont données dans le calendrier julien, comme dans les canons d'éclipses. Au-delà de 2050 et en deçà de 1600, ΔT n'est plus mesuré mais extrapolé : la date et la durée restent fiables, la longitude peut se décaler de plusieurs dizaines de kilomètres. C'est cette incertitude, et non le calcul, qui interdit d'aller beaucoup plus loin — vers −3000 elle atteint plusieurs degrés de rotation terrestre, soit un changement de continent.</p>
     <p class="fine">Fond de carte Natural Earth au 1:50 M. Villes : 19 645 agglomérations de plus de 20 000 habitants, d'après GeoNames. Fuseaux horaires par tz-lookup (domaine public) et par la base tzdata du navigateur.</p>
 
-    <p class="sig"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel — tous droits réservés · version 2.1</p>
+    <p class="sig"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel — tous droits réservés · version 2.2</p>
    </div>
   </div>
 </div>
@@ -560,10 +560,10 @@ function drawBase(){
     var cel=ECL[sel].pen;
     bx.beginPath();
     for(var ci=0;ci<cel.length;ci++){
-      var lo0=cel[ci][0], la0=cel[ci][1];
-      var a=pt(lo0,la0), b2=pt(lo0+2,la0), c2=pt(lo0+2,la0+2), d2=pt(lo0,la0+2);
+      var lo0=cel[ci][0], la0=cel[ci][1], sz=cel[ci][2];
+      var a=pt(lo0,la0), b2=pt(lo0+sz,la0), c2=pt(lo0+sz,la0+sz), d2=pt(lo0,la0+sz);
       if(!a||!b2||!c2||!d2) continue;
-      if(mode==='flat'&&lo0+2>180) continue;
+      if(mode==='flat'&&lo0+sz>180.001) continue;
       bx.moveTo(a[0],a[1]); bx.lineTo(b2[0],b2[1]);
       bx.lineTo(c2[0],c2[1]); bx.lineTo(d2[0],d2[1]); bx.closePath();
     }
@@ -890,7 +890,8 @@ function besCirc(e,lat,lon,hh){
   var xi=rc*Math.sin(th);
   var eta=rs*Math.cos(D)-rc*Math.sin(D)*Math.cos(th);
   var ze=rs*Math.sin(D)+rc*Math.cos(D)*Math.cos(th);
-  return { m:Math.hypot(x-xi,y-eta), L1:l1-ze*b[25], L2:l2-ze*b[26], ze:ze };
+  return { m:Math.hypot(x-xi,y-eta), L1:l1-ze*b[25], L2:l2-ze*b[26], ze:ze,
+           d:dd, mu:mu, rs:rs, rc:rc };
 }
 function discOverlap(Rs,Rm,sep){
   if(sep>=Rs+Rm) return 0;
@@ -904,21 +905,43 @@ function magAt(e,lat,lon,hh){
   if(c.ze<=0) return 0;
   return discOverlap((c.L1+c.L2)/2,(c.L1-c.L2)/2,c.m);
 }
-function maxObsc(e,lat,lon,pas){
-  var bv=0, bh=null, i, hh, v;
-  pas = pas||20;
-  for(i=-5*pas;i<=5*pas;i++){
-    hh=i/pas; v=magAt(e,lat,lon,hh);
-    if(v>bv){ bv=v; bh=hh; }
+/* Maximum local de l'eclipse. La distance m entre le lieu et l'axe est une
+   fonction unimodale du temps: on la minimise sans risque par section doree.
+   Si le Soleil est couche a cet instant, le maximum visible se produit au bord
+   du jour, que l'on va chercher par changement de signe de zeta. Aucune
+   exploration par pas fixe, donc aucune maille perdue: c'est ce qui creusait
+   des creneaux dans la zone grisee. */
+function maxObsc(e,lat,lon){
+  var lo=-5, hi=5, a, b, i;
+  for(i=0;i<15;i++){
+    a=lo+(hi-lo)/3; b=hi-(hi-lo)/3;
+    if(besCirc(e,lat,lon,a).m < besCirc(e,lat,lon,b).m) hi=b; else lo=a;
   }
-  if(bh===null) return {v:0,h:null};
-  var lo=bh-1/pas, hi=bh+1/pas, a, b2;
-  for(i=0;i<28;i++){
-    a=lo+(hi-lo)/3; b2=hi-(hi-lo)/3;
-    if(magAt(e,lat,lon,a)<magAt(e,lat,lon,b2)) lo=a; else hi=b2;
+  var hm=(lo+hi)/2, c=besCirc(e,lat,lon,hm);
+  if(c.ze>0) return { v:discOverlap((c.L1+c.L2)/2,(c.L1-c.L2)/2,c.m), h:hm };
+  /* Soleil sous l'horizon a cet instant: le maximum visible se produit au lever
+     ou au coucher. L'angle horaire du bord du jour se resout directement,
+     cos(theta0) = -tan(phi')·tan(d), ce qui evite tout balayage. */
+  var t0=-(c.rs/c.rc)*Math.tan(c.d*RAD);
+  if(Math.abs(t0)>1) return {v:0,h:null};
+  var th0=Math.acos(t0)/RAD, cand=null, k, s2, dh;
+  for(k=0;k<2;k++){
+    s2=k?-th0:th0;
+    dh=(((s2-lon-c.mu)%360)+540)%360-180;
+    var hc=hm+dh/15.041;
+    if(hc<-5||hc>5) continue;
+    if(cand===null||Math.abs(hc-hm)<Math.abs(cand-hm)) cand=hc;
   }
-  var hm=(lo+hi)/2, vm=magAt(e,lat,lon,hm);
-  return vm>=bv?{v:vm,h:hm}:{v:bv,h:bh};
+  if(cand===null) return {v:0,h:null};
+  var p=cand-0.25, q=cand+0.25;                 // affinage sur le passage a zero
+  if((besCirc(e,lat,lon,p).ze>0)===(besCirc(e,lat,lon,q).ze>0)) return {v:0,h:null};
+  for(k=0;k<22;k++){
+    var mid=(p+q)/2;
+    if((besCirc(e,lat,lon,mid).ze>0)===(besCirc(e,lat,lon,p).ze>0)) p=mid; else q=mid;
+  }
+  var hb=besCirc(e,lat,lon,p).ze>0?p:q, cb=besCirc(e,lat,lon,hb);
+  if(cb.ze<=0) return {v:0,h:null};
+  return { v:discOverlap((cb.L1+cb.L2)/2,(cb.L1-cb.L2)/2,cb.m), h:hb };
 }
 function totalDur(e,lat,lon,hm){          // durée de la totalité en ce lieu, en secondes
   function f(hh){ var c=besCirc(e,lat,lon,hh);
@@ -933,27 +956,33 @@ function totalDur(e,lat,lon,hm){          // durée de la totalité en ce lieu, 
 }
 /* Zone de partialité: grille de 2°, chaque maille retenue si le Soleil y est
    entamé à un moment quelconque. On la calcule une fois par éclipse choisie. */
+/* Zone de partialite. Grille de 2°, puis les mailles du bord sont subdivisees
+   en seizieme de maille, soit un demi-degre, ce qui ramene l'escalier de 220 km
+   a environ 55 km. Le test est exactement celui de la fiche. */
 function penumbraCells(e){
   if(e.pen) return e.pen;
-  var cells=[], g=e.gmax||[0,0], la, lo, i, hh, on;
-  var glo=g[0]*RAD, gla=g[1]*RAD;
-  for(la=-89;la<90;la+=2) for(lo=-180;lo<180;lo+=2){
-    var dlat=la*RAD, dlon=lo*RAD;
-    var cosd=Math.sin(gla)*Math.sin(dlat)+Math.cos(gla)*Math.cos(dlat)*Math.cos(dlon-glo);
-    if(cosd<-0.10) continue;                       // au-delà de 96° du maximum
-    var g=function(t){ var c=besCirc(e,la,lo,t);
-      return c.ze>0 ? c.L1-c.m : -1; };
-    var bv=-1, bh=0, t;
-    for(i=-10;i<=10;i++){ t=i/2; var v=g(t); if(v>bv){ bv=v; bh=t; } }
-    if(bv<=0){
-      var lo2=bh-0.5, hi2=bh+0.5, a2, b3;
-      for(i=0;i<14;i++){
-        a2=lo2+(hi2-lo2)/3; b3=hi2-(hi2-lo2)/3;
-        if(g(a2)<g(b3)) lo2=a2; else hi2=b3;
-      }
-      bv=g((lo2+hi2)/2);
+  var g=e.gmax||[0,0], glo=g[0]*RAD, gla=g[1]*RAD;
+  var proche=function(la,lo){
+    var dl=la*RAD, dn=lo*RAD;
+    return Math.sin(gla)*Math.sin(dl)+Math.cos(gla)*Math.cos(dl)*Math.cos(dn-glo) > -0.12;
+  };
+  var dedans=function(la,lo){ return maxObsc(e,la,lo).v>0; };
+  var P=2, grille={}, la, lo;
+  for(la=-90;la<90;la+=P) for(lo=-180;lo<180;lo+=P)
+    if(proche(la+P/2,lo+P/2)) grille[la+'|'+lo]=dedans(la+P/2,lo+P/2);
+  var cells=[], cle, parts, i, j;
+  for(cle in grille){
+    parts=cle.split('|'); la=+parts[0]; lo=+parts[1];
+    var v=grille[cle], bord=false, dx, dy, vv;
+    for(dy=-P;dy<=P&&!bord;dy+=P) for(dx=-P;dx<=P;dx+=P){
+      if(!dx&&!dy) continue;
+      vv=grille[(la+dy)+'|'+(((lo+dx+540)%360)-180)];
+      if(vv!==undefined && vv!==v){ bord=true; break; }
     }
-    if(bv>0) cells.push([lo,la]);
+    if(!bord){ if(v) cells.push([lo,la,P]); continue; }
+    var q=P/4;                                   // 0,5° sur le pourtour
+    for(i=0;i<4;i++) for(j=0;j<4;j++)
+      if(dedans(la+(i+0.5)*q, lo+(j+0.5)*q)) cells.push([lo+j*q, la+i*q, q]);
   }
   return (e.pen=cells);
 }
