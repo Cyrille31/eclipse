@@ -210,7 +210,7 @@ body{background:var(--paper);color:var(--ink);
     <div><span class="k">Type</span><span class="v" id="cType">—</span></div>
   </div>
 
-  <p class="sig-page"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel · version 2.2</p>
+  <p class="sig-page"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel · version 2.4</p>
   <p class="sig-note">Conçue, spécifiée et validée par CGExcel. Code écrit avec l'assistance d'un modèle de langage (Claude, Anthropic), sous contrôle et responsabilité humaine. Les éclipses affichées ne sont pas produites par une IA : elles résultent d'un calcul astronomique déterministe.</p>
 
   <div class="help" id="help" hidden>
@@ -220,7 +220,7 @@ body{background:var(--paper);color:var(--ink);
 
     <p>Toutes les bandes de totalité qui balaient la Terre entre l'an 1000 et l'an 3000, tracées à leur largeur réelle. Les encres se superposent là où le cône d'ombre est repassé.</p>
 
-    <p class="fine">Version 2.2 · application accessible à l'adresse
+    <p class="fine">Version 2.4 · application accessible à l'adresse
        <a href="https://cyrille31.github.io/eclipse/">cyrille31.github.io/eclipse</a>,
        où elle peut être installée sur l'écran d'accueil et consultée hors ligne.</p>
     <p class="fine">Un bouton <strong>Installer l'application</strong> apparaît sous le titre lorsque le navigateur le permet. S'il reste absent — Chrome ne propose spontanément l'installation qu'une fois, puis se tait trois mois, et se souvient d'une désinstallation — passez par le menu à trois points du navigateur, entrée « Ajouter à l'écran d'accueil » ou « Installer l'application », qui reste toujours disponible. En dernier recours, ouvrez les paramètres du site par l'icône à gauche de l'adresse et effacez ses données : cela remet à zéro le cache et les compteurs d'installation.</p>
@@ -237,7 +237,7 @@ body{background:var(--paper);color:var(--ink);
       <dt>Un appui</dt><dd>Isole la bande : elle passe en noir, les autres s'estompent. Le peigne se marque en retour. Un second appui la libère.</dd>
       <dt>Deux appuis</dt><dd>Amènent la bande au centre du globe.</dd>
       <dt>Appui long</dt><dd>Ouvre la fiche du point, où que vous touchiez : ce qu'un observateur aurait vu à cet endroit précis.</dd>
-      <dt>Un appui ailleurs</dt><dd>Une fois une éclipse choisie, un simple appui hors des bandes ouvre aussi la fiche du lieu touché — c'est le moyen d'explorer la zone de partialité.</dd>
+      <dt>Explorer la zone grisée</dt><dd>Une fois une éclipse choisie, l'appui long ouvre la fiche du lieu touché, où qu'il soit dans la zone de partialité. Au doigt c'est le seul moyen, pour que l'appui bref reste disponible pour faire tourner le globe ; à la souris, un simple clic suffit.</dd>
     </dl>
 
     <h3>La zone de partialité</h3>
@@ -275,7 +275,7 @@ body{background:var(--paper);color:var(--ink);
     <p class="fine">Les dates antérieures au 15 octobre 1582 sont données dans le calendrier julien, comme dans les canons d'éclipses. Au-delà de 2050 et en deçà de 1600, ΔT n'est plus mesuré mais extrapolé : la date et la durée restent fiables, la longitude peut se décaler de plusieurs dizaines de kilomètres. C'est cette incertitude, et non le calcul, qui interdit d'aller beaucoup plus loin — vers −3000 elle atteint plusieurs degrés de rotation terrestre, soit un changement de continent.</p>
     <p class="fine">Fond de carte Natural Earth au 1:50 M. Villes : 19 645 agglomérations de plus de 20 000 habitants, d'après GeoNames. Fuseaux horaires par tz-lookup (domaine public) et par la base tzdata du navigateur.</p>
 
-    <p class="sig"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel — tous droits réservés · version 2.2</p>
+    <p class="sig"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel — tous droits réservés · version 2.4</p>
    </div>
   </div>
 </div>
@@ -1101,7 +1101,12 @@ cv.addEventListener('pointerdown',e=>{
     clearTimeout(hold);
     hold=setTimeout(()=>{ if(moved<16&&ptrs.size===1){ held=true; showPop(x,y); } },520);}
   else if(ptrs.size===2){const [a,b]=[...ptrs.values()];
-    clearTimeout(hold);
+    /* Un second doigt annonce un pincement: on annule l'attente, et on referme
+       la fiche si l'appui long l'a deja ouverte pendant que le doigt cherchait
+       sa place. Le drapeau interdit ensuite toute lecture d'appui bref lors du
+       relachement des deux doigts. */
+    clearTimeout(hold); pince=true;
+    if(held){ held=false; hidePop(); }
     gest={pinch:Math.hypot(a[0]-b[0],a[1]-b[1]),z0:zoom};}
 });
 cv.addEventListener('pointermove',e=>{
@@ -1132,29 +1137,32 @@ cv.addEventListener('pointermove',e=>{
   }
   dirty=true; draw();
 });
-let lastTap={t:0,i:-1}, hold=0, held=false;
+let lastTap={t:0,i:-1}, hold=0, held=false, pince=false;
 function up(e){
   const one=ptrs.size===1;
   ptrs.delete(e.pointerId);
   clearTimeout(hold);
+  if(!ptrs.size && pince){ pince=false; held=false; gest=null; endLight(); return; }
   if(held){ held=false; if(ptrs.size<2) gest=null; endLight(); return; }
-  if(one&&moved<12){
+  if(one&&!pince&&moved<12){
     const [x,y]=localXY(e), h=hit(x,y);
     if(h>=0){
       hidePop();
       const now=performance.now();
       if(h===lastTap.i && now-lastTap.t<380){ focus(h); lastTap={t:0,i:-1}; }
       else { select(h); lastTap={t:now,i:h}; }
-    }else if(sel>=0){
-      showPop(x,y);                    // hors des bandes: fiche du point
-    }else hidePop();
+    }else if(sel>=0 && e.pointerType!=='touch'){
+      showPop(x,y);          // a la souris seulement: au doigt, l'appui bref
+    }else hidePop();         // doit rester libre pour faire tourner le globe
   }
   if(ptrs.size<2) gest=null;
   endLight();
 }
 cv.addEventListener('dblclick',e=>e.preventDefault());
 cv.addEventListener('pointerup',up);
-cv.addEventListener('pointercancel',e=>{ptrs.delete(e.pointerId);gest=null;clearTimeout(hold);endLight();});
+cv.addEventListener('pointercancel',e=>{ptrs.delete(e.pointerId);gest=null;clearTimeout(hold);
+  if(!ptrs.size) pince=false;
+  endLight();});
 cv.addEventListener('contextmenu',e=>e.preventDefault());
 cv.addEventListener('pointerleave',()=>{if(!ptrs.size&&hov>=0){hov=-1;card(sel);marks();draw();}});
 $('zIn').onclick=()=>setZoom(zoom*1.6);
