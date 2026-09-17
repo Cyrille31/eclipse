@@ -2,7 +2,7 @@
    Stratégie: on sert d'abord la copie locale, puis on rafraîchit en arrière-plan.
    L'application s'ouvre donc instantanément et sans réseau ; une version
    nouvellement publiée est prise en compte au chargement suivant. */
-var CACHE = 'eclipses-v2.4';
+var CACHE = 'eclipses-v2.5';
 var FICHIERS = ['./', './index.html', './manifest.webmanifest',
                 './icon-192.png', './icon-512.png'];
 
