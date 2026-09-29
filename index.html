@@ -210,7 +210,7 @@ body{background:var(--paper);color:var(--ink);
     <div><span class="k">Type</span><span class="v" id="cType">—</span></div>
   </div>
 
-  <p class="sig-page"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel · version 2.8</p>
+  <p class="sig-page"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel · version 2.9</p>
   <p class="sig-note">Licence MIT + BAL 1.0 — Bonne Action License. En échange, une seule chose vous est demandée, sur l'honneur : faire une bonne action chaque jour. Aider un voisin, sourire à un inconnu, ramasser un papier… c'est vous qui voyez.<br>
   Conçue, spécifiée et validée par CGExcel. Code écrit avec l'assistance d'un modèle de langage (Claude, Anthropic), sous contrôle et responsabilité humaine. Les éclipses affichées ne sont pas produites par une IA : elles résultent d'un calcul astronomique déterministe.</p>
 
@@ -221,7 +221,7 @@ body{background:var(--paper);color:var(--ink);
 
     <p>Toutes les bandes de totalité qui balaient la Terre entre l'an 1000 et l'an 3000, tracées à leur largeur réelle. Les encres se superposent là où le cône d'ombre est repassé.</p>
 
-    <p class="fine">Version 2.8 · application accessible à l'adresse
+    <p class="fine">Version 2.9 · application accessible à l'adresse
        <a href="https://cyrille31.github.io/eclipse/">cyrille31.github.io/eclipse</a>,
        où elle peut être installée sur l'écran d'accueil et consultée hors ligne.</p>
     <p class="fine">Un bouton <strong>Installer l'application</strong> apparaît sous le titre lorsque le navigateur le permet. S'il reste absent — Chrome ne propose spontanément l'installation qu'une fois, puis se tait trois mois, et se souvient d'une désinstallation — passez par le menu à trois points du navigateur, entrée « Ajouter à l'écran d'accueil » ou « Installer l'application », qui reste toujours disponible. En dernier recours, ouvrez les paramètres du site par l'icône à gauche de l'adresse et effacez ses données : cela remet à zéro le cache et les compteurs d'installation.</p>
@@ -280,7 +280,7 @@ body{background:var(--paper);color:var(--ink);
     <p class="fine">Les dates antérieures au 15 octobre 1582 sont données dans le calendrier julien, comme dans les canons d'éclipses. Au-delà de 2050 et en deçà de 1600, ΔT n'est plus mesuré mais extrapolé : la date et la durée restent fiables, la longitude peut se décaler de plusieurs dizaines de kilomètres. C'est cette incertitude, et non le calcul, qui interdit d'aller beaucoup plus loin — vers −3000 elle atteint plusieurs degrés de rotation terrestre, soit un changement de continent.</p>
     <p class="fine">Les tracés sont échantillonnés tous les 200 km, ce qui près d'un pôle représente des dizaines de degrés de longitude : des points intermédiaires sont donc insérés sur le grand cercle pour qu'aucun segment ne dépasse quatre degrés. Quand une bande chevauche l'antiméridien, ses deux bords se retrouvent de part et d'autre de ±180° : les longitudes sont donc déroulées en continu, le bord sud rattaché au bord nord, et le ruban dessiné autant de fois que nécessaire, décalé de 360°. Quand elle contient un pôle, ses deux bords passent de chaque côté et le polygone se ferme par la ligne des pôles, qui en Equal Earth est le bord même de la carte. Il subsiste neuf éclipses, toutes hors du siècle courant, dont la bande frôle un pôle de si près que sa traversée s'étale malgré tout à l'horizontale ; le globe, lui, les montre correctement. Fond de carte Natural Earth au 1:50 M. Villes : 19 645 agglomérations de plus de 20 000 habitants, d'après GeoNames. Fuseaux horaires par tz-lookup (domaine public) et par la base tzdata du navigateur.</p>
 
-    <p class="sig"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel — tous droits réservés · version 2.8</p>
+    <p class="sig"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel — tous droits réservés · version 2.9</p>
    </div>
   </div>
 </div>
@@ -473,7 +473,7 @@ function limbCross(a,b){          // a dans le champ, b hors champ
   }
   return [Math.atan2(A[1],A[0])/RAD, Math.asin(Math.max(-1,Math.min(1,A[2])))/RAD];
 }
-function globePath(c,pts,stride){
+function globePath(c,pts,stride,ajout){
   stride=stride||1;
   const idx=[]; for(let i=0;i<pts.length;i+=stride) idx.push(i);
   if(idx[idx.length-1]!==pts.length-1) idx.push(pts.length-1);
@@ -487,7 +487,7 @@ function globePath(c,pts,stride){
     const sp=Math.sin(p), cp=Math.cos(p);
     put(cx+cp*Math.sin(l)*R, cy-(RC0*sp-RS0*cp*Math.cos(l))*R); };
   const putAz=a=>put(cx+R*Math.cos(a), cy-R*Math.sin(a));
-  c.beginPath();
+  if(!ajout) c.beginPath();
   if(nv===n){ for(let i=0;i<n;i++) putLL(pts[idx[i]]); c.closePath(); return true; }
   for(let i=0;i<n;i++){
     const j=(i+1)%n;
@@ -689,15 +689,22 @@ function drawBase(){
   bx.strokeStyle='rgba(20,22,26,.26)'; bx.lineWidth=.7; grat(t=>pt(-180+360*t,0));
 
   if(sel>=0 && ECL[sel].pen){
-    var cel=ECL[sel].pen;
+    var bandes=penumbraRuns(ECL[sel], light);
     bx.beginPath();
-    for(var ci=0;ci<cel.length;ci++){
-      var lo0=cel[ci][0], la0=cel[ci][1], sz=cel[ci][2];
-      var a=pt(lo0,la0), b2=pt(lo0+sz,la0), c2=pt(lo0+sz,la0+sz), d2=pt(lo0,la0+sz);
-      if(!a||!b2||!c2||!d2) continue;
-      if(mode==='flat'&&lo0+sz>180.001) continue;
-      bx.moveTo(a[0],a[1]); bx.lineTo(b2[0],b2[1]);
-      bx.lineTo(c2[0],c2[1]); bx.lineTo(d2[0],d2[1]); bx.closePath();
+    for(var ci=0;ci<bandes.length;ci++){
+      var l1=bandes[ci][0], l2=bandes[ci][1], la0=bandes[ci][2], sz=bandes[ci][3];
+      if(mode==='flat'){
+        if(l2>180.001) continue;
+        var a=pt(l1,la0), b2=pt(l2,la0), c2=pt(l2,la0+sz), d2=pt(l1,la0+sz);
+        if(!a||!b2||!c2||!d2) continue;
+        bx.moveTo(a[0],a[1]); bx.lineTo(b2[0],b2[1]);
+        bx.lineTo(c2[0],c2[1]); bx.lineTo(d2[0],d2[1]); bx.closePath();
+      }else{
+        var ns=Math.max(1,Math.ceil((l2-l1)/4)), ring=[], kk;
+        for(kk=0;kk<=ns;kk++) ring.push([l1+(l2-l1)*kk/ns, la0]);
+        for(kk=ns;kk>=0;kk--) ring.push([l1+(l2-l1)*kk/ns, la0+sz]);
+        globePath(bx,ring,1,true);
+      }
     }
     bx.fillStyle='rgba(20,22,26,.11)'; bx.fill();
   }
@@ -1117,6 +1124,51 @@ function penumbraCells(e){
       if(dedans(la+(i+0.5)*q, lo+(j+0.5)*q)) cells.push([lo+j*q, la+i*q, q]);
   }
   return (e.pen=cells);
+}
+/* Les mailles voisines d'une même rangée sont fusionnées en bandes. En Equal
+   Earth, x est linéaire en longitude à latitude fixée : une bande y est donc
+   exactement un quadrilatère, sans perte. Sur le globe elle est redécoupée
+   tous les quatre degrés. Le gain est décisif pour la fluidité : environ 7 900
+   mailles et 31 600 sommets par image deviennent 400 bandes et 1 600 sommets
+   en planisphère, 5 900 sur le globe. */
+function fusionner(paires){        // longitudes consécutives d'une même rangée
+  const rows=new Map();
+  for(const [lo,la,sz] of paires){
+    const k=la+'|'+sz;
+    let a=rows.get(k); if(!a){ a=[]; rows.set(k,a); }
+    a.push(lo);
+  }
+  const out=[];
+  rows.forEach((los,k)=>{
+    const p=k.split('|'), la=+p[0], sz=+p[1];
+    los.sort((x,y)=>x-y);
+    let a=los[0], prev=los[0];
+    for(let i=1;i<los.length;i++){
+      if(Math.abs(los[i]-prev-sz)<1e-9){ prev=los[i]; continue; }
+      out.push([a,prev+sz,la,sz]); a=los[i]; prev=los[i];
+    }
+    out.push([a,prev+sz,la,sz]);
+  });
+  return out;
+}
+function penumbraRuns(e,gros){
+  if(!e.penRuns){
+    const cel=penumbraCells(e);
+    e.penRuns=fusionner(cel);
+    /* Variante grossière pour le mouvement: les mailles fines du pourtour sont
+       ramenées à la grille de 2°. Six fois moins de sous-chemins, pour un bord
+       qui ne diffère que de deux degrés — invisible pendant qu'on fait tourner
+       le globe, et le tracé fin revient au relâchement. */
+    const vus=new Set(), P=2;
+    for(const c of cel){
+      const la=Math.floor(c[1]/P)*P, lo=Math.floor(c[0]/P)*P;
+      vus.add(la+'|'+lo);
+    }
+    const bruts=[];
+    vus.forEach(k=>{ const p=k.split('|'); bruts.push([+p[1],+p[0],P]); });
+    e.penRunsC=fusionner(bruts);
+  }
+  return gros ? e.penRunsC : e.penRuns;
 }
 const ROSE=['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSO','SO','OSO','O','ONO','NO','NNO'];
 const pop=$('pop');
