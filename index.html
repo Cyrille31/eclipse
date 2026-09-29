@@ -210,8 +210,9 @@ body{background:var(--paper);color:var(--ink);
     <div><span class="k">Type</span><span class="v" id="cType">—</span></div>
   </div>
 
-  <p class="sig-page"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel · version 2.7</p>
-  <p class="sig-note">Conçue, spécifiée et validée par CGExcel. Code écrit avec l'assistance d'un modèle de langage (Claude, Anthropic), sous contrôle et responsabilité humaine. Les éclipses affichées ne sont pas produites par une IA : elles résultent d'un calcul astronomique déterministe.</p>
+  <p class="sig-page"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel · version 2.8</p>
+  <p class="sig-note">Licence MIT + BAL 1.0 — Bonne Action License. En échange, une seule chose vous est demandée, sur l'honneur : faire une bonne action chaque jour. Aider un voisin, sourire à un inconnu, ramasser un papier… c'est vous qui voyez.<br>
+  Conçue, spécifiée et validée par CGExcel. Code écrit avec l'assistance d'un modèle de langage (Claude, Anthropic), sous contrôle et responsabilité humaine. Les éclipses affichées ne sont pas produites par une IA : elles résultent d'un calcul astronomique déterministe.</p>
 
   <div class="help" id="help" hidden>
    <div class="help-box" role="dialog" aria-modal="true" aria-label="Mode d'emploi">
@@ -220,7 +221,7 @@ body{background:var(--paper);color:var(--ink);
 
     <p>Toutes les bandes de totalité qui balaient la Terre entre l'an 1000 et l'an 3000, tracées à leur largeur réelle. Les encres se superposent là où le cône d'ombre est repassé.</p>
 
-    <p class="fine">Version 2.7 · application accessible à l'adresse
+    <p class="fine">Version 2.8 · application accessible à l'adresse
        <a href="https://cyrille31.github.io/eclipse/">cyrille31.github.io/eclipse</a>,
        où elle peut être installée sur l'écran d'accueil et consultée hors ligne.</p>
     <p class="fine">Un bouton <strong>Installer l'application</strong> apparaît sous le titre lorsque le navigateur le permet. S'il reste absent — Chrome ne propose spontanément l'installation qu'une fois, puis se tait trois mois, et se souvient d'une désinstallation — passez par le menu à trois points du navigateur, entrée « Ajouter à l'écran d'accueil » ou « Installer l'application », qui reste toujours disponible. En dernier recours, ouvrez les paramètres du site par l'icône à gauche de l'adresse et effacez ses données : cela remet à zéro le cache et les compteurs d'installation.</p>
@@ -270,12 +271,16 @@ body{background:var(--paper);color:var(--ink);
     <p>Son code a été écrit avec l'assistance d'un modèle de langage, Claude d'Anthropic, dans un dialogue itératif où chaque correction a été vérifiée contre des valeurs de référence avant d'être retenue. La mention est faite par souci de transparence, non par obligation : les règles européennes de transparence sur l'IA visent les contenus qu'un système génératif produit à destination du public, non la manière dont un logiciel a été développé.</p>
     <p><strong>Les éclipses affichées ne sont, elles, produites par aucune IA.</strong> Ce sont les résultats d'un calcul astronomique déterministe et reproductible, décrit ci-dessous : mêmes séries, mêmes équations, mêmes nombres à chaque exécution.</p>
 
+    <h3>Licence</h3>
+    <p>Logiciel libre, sous licence MIT — vous pouvez l'utiliser, le copier, le modifier et le partager, y compris à titre commercial. S'y ajoute la <strong>BAL 1.0, Bonne Action License</strong>, qui n'est pas une contrainte juridique mais un vœu sur l'honneur : En échange, une seule chose vous est demandée, sur l'honneur : faire une bonne action chaque jour. Aider un voisin, sourire à un inconnu, ramasser un papier… c'est vous qui voyez.</p>
+    <p class="fine">Le texte complet des deux licences, ainsi que les crédits des données de tiers — fond de carte Natural Earth, villes GeoNames, fuseaux tz-lookup, polices SIL OFL — figure dans le fichier LICENSE joint à l'application.</p>
+
     <h3>Ce que vaut le calcul</h3>
     <p class="fine">Positions apparentes géocentriques du Soleil et de la Lune par les séries VSOP87 et ELP2000, intersection de l'axe du cône avec l'ellipsoïde WGS84, entrée et sortie de l'ombre affinées par dichotomie, limites nord et sud obtenues comme l'enveloppe réellement balayée : un lieu appartient à la bande s'il se trouve dans le cône à un instant quelconque du passage, et non à celui où l'axe le frôle. La distinction est négligeable quand le Soleil est haut, décisive au ras de l'horizon, où l'ombre instantanée s'étire sur des milliers de kilomètres très en avant et en arrière du centre. Échantillonnage à pas constant de 200 km. Contrôle sur les éclipses de référence : environ 20 km d'écart sur la ligne centrale, 2 s sur la durée, 2 km sur la largeur — 116 km calculés contre 115 publiés en 2017, 200 contre 198 en 2024, 259 contre 256 en 1973. Le résidu de 2 s vient de la Lune traitée comme une sphère de 1 737,4 km, alors que ses vallées polaires laissent filtrer la lumière un instant de plus.</p>
     <p class="fine">Les dates antérieures au 15 octobre 1582 sont données dans le calendrier julien, comme dans les canons d'éclipses. Au-delà de 2050 et en deçà de 1600, ΔT n'est plus mesuré mais extrapolé : la date et la durée restent fiables, la longitude peut se décaler de plusieurs dizaines de kilomètres. C'est cette incertitude, et non le calcul, qui interdit d'aller beaucoup plus loin — vers −3000 elle atteint plusieurs degrés de rotation terrestre, soit un changement de continent.</p>
-    <p class="fine">Les tracés sont échantillonnés tous les 200 km, ce qui près d'un pôle représente des dizaines de degrés de longitude : des points intermédiaires sont donc insérés sur le grand cercle pour qu'aucun segment ne dépasse quatre degrés. Il subsiste dix éclipses dont la bande passe à moins d'un kilomètre d'un pôle ; en planisphère Equal Earth, où le pôle est une ligne et non un point, leur traversée s'y étale forcément à l'horizontale. Le globe, lui, les montre correctement. Fond de carte Natural Earth au 1:50 M. Villes : 19 645 agglomérations de plus de 20 000 habitants, d'après GeoNames. Fuseaux horaires par tz-lookup (domaine public) et par la base tzdata du navigateur.</p>
+    <p class="fine">Les tracés sont échantillonnés tous les 200 km, ce qui près d'un pôle représente des dizaines de degrés de longitude : des points intermédiaires sont donc insérés sur le grand cercle pour qu'aucun segment ne dépasse quatre degrés. Quand une bande chevauche l'antiméridien, ses deux bords se retrouvent de part et d'autre de ±180° : les longitudes sont donc déroulées en continu, le bord sud rattaché au bord nord, et le ruban dessiné autant de fois que nécessaire, décalé de 360°. Quand elle contient un pôle, ses deux bords passent de chaque côté et le polygone se ferme par la ligne des pôles, qui en Equal Earth est le bord même de la carte. Il subsiste neuf éclipses, toutes hors du siècle courant, dont la bande frôle un pôle de si près que sa traversée s'étale malgré tout à l'horizontale ; le globe, lui, les montre correctement. Fond de carte Natural Earth au 1:50 M. Villes : 19 645 agglomérations de plus de 20 000 habitants, d'après GeoNames. Fuseaux horaires par tz-lookup (domaine public) et par la base tzdata du navigateur.</p>
 
-    <p class="sig"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel — tous droits réservés · version 2.7</p>
+    <p class="sig"><svg class="cgl" width="20" height="20" aria-hidden="true"><use href="#cglogo"/></svg> © 2026 CGExcel — tous droits réservés · version 2.8</p>
    </div>
   </div>
 </div>
@@ -514,24 +519,87 @@ function fillRing(c,pts,stride){
    indices. On la dessine colonne par colonne, en ne gardant que les colonnes
    dont les deux bords sont dans le champ, et on referme chaque groupe par sa
    section transversale, large de 200 km. Aucune corde n'est representable. */
+/* Une bande est un ruban: bord nord et bord sud partagent les memes indices.
+   En projection plane, couper « quand un bord saute de plus de 180° » ne suffit
+   pas: si la bande chevauche l'antimeridien, le bord nord peut etre a -179° et
+   le bord sud a +179° AU MEME INDICE, et le quadrilatere tire entre les deux
+   traverse alors toute la carte. On deroule donc les longitudes en continu, le
+   bord sud rattache au bord nord, puis on dessine le ruban autant de fois que
+   necessaire, decale de 360°, la decoupe de la carte faisant le reste. Sur le
+   globe la question ne se pose pas: il n'y a pas d'antimeridien. */
 function bandPath(c,N,S){
   const flat = mode==='flat';
   const ok=i=>flat||(visf(N[i][0],N[i][1])>=0&&visf(S[i][0],S[i][1])>=0);
-  const cut=i=>flat&&(Math.abs(N[i][0]-N[i-1][0])>180||Math.abs(S[i][0]-S[i-1][0])>180);
   const n=N.length; let any=false, i=0;
   c.beginPath();
   while(i<n){
     while(i<n&&!ok(i)) i++;
     if(i>=n) break;
     let b=i;
-    while(b+1<n&&ok(b+1)&&!cut(b+1)) b++;
+    while(b+1<n&&ok(b+1)) b++;
     if(b>i){
-      let p=pt(N[i][0],N[i][1]);
-      if(p){
-        c.moveTo(p[0],p[1]);
-        for(let t=i+1;t<=b;t++){ p=pt(N[t][0],N[t][1]); if(p) c.lineTo(p[0],p[1]); }
-        for(let t=b;t>=i;t--){ p=pt(S[t][0],S[t][1]); if(p) c.lineTo(p[0],p[1]); }
-        c.closePath(); any=true;
+      if(!flat){
+        let p=pt(N[i][0],N[i][1]);
+        if(p){
+          c.moveTo(p[0],p[1]);
+          for(let t=i+1;t<=b;t++){ p=pt(N[t][0],N[t][1]); if(p) c.lineTo(p[0],p[1]); }
+          for(let t=b;t>=i;t--){ p=pt(S[t][0],S[t][1]); if(p) c.lineTo(p[0],p[1]); }
+          c.closePath(); any=true;
+        }
+      }else{
+        const NL=[], SL=[]; let prev=N[i][0];
+        for(let t=i;t<=b;t++){
+          let ln=N[t][0];
+          while(ln-prev>180) ln-=360;
+          while(ln-prev<-180) ln+=360;
+          prev=ln;
+          let ls=S[t][0];
+          while(ls-ln>180) ls-=360;
+          while(ls-ln<-180) ls+=360;
+          NL.push(ln); SL.push(ls);
+        }
+        /* Quand le ruban contient un pole, ses deux bords se retrouvent de part
+           et d'autre, a pres de 180° l'un de l'autre. Les relier directement
+           tracerait une barre par l'equateur. On decoupe donc le parcours en
+           blocs selon que le pole est dedans ou non, et pour ceux qui le
+           contiennent on ferme le polygone par la ligne des poles — laquelle,
+           en Equal Earth, est le bord meme de la carte. */
+        const L=NL.length, pol=[];
+        for(let t=0;t<L;t++) pol.push(Math.abs(SL[t]-NL[t])>90);
+        const blocs=[]; let s0=0;
+        for(let t=1;t<L;t++) if(pol[t]!==pol[t-1]){ blocs.push([s0,t]); s0=t; }
+        blocs.push([s0,L-1]);
+        for(const [a2,z2] of blocs){
+          if(z2<=a2) continue;
+          /* Chaque extremite se ferme selon SA propre section, et non selon le
+             bloc: sinon la colonne de transition relie encore les deux bords en
+             direct, par l'equateur. */
+          const poleA = pol[a2] ? (N[i+a2][1]>0?90:-90) : 0;
+          const poleZ = pol[z2] ? (N[i+z2][1]>0?90:-90) : 0;
+          let lo=1e9, hi=-1e9;
+          for(let t=a2;t<=z2;t++){
+            if(NL[t]<lo)lo=NL[t]; if(SL[t]<lo)lo=SL[t];
+            if(NL[t]>hi)hi=NL[t]; if(SL[t]>hi)hi=SL[t];
+          }
+          const kmin=Math.ceil((lo-180)/360), kmax=Math.floor((hi+180)/360);
+          for(let k=kmin;k<=kmax&&k<kmin+5;k++){
+            const off=-360*k;
+            let p=pt(NL[a2]+off,N[i+a2][1]);
+            if(!p) continue;
+            c.moveTo(p[0],p[1]);
+            for(let t=a2+1;t<=z2;t++){ p=pt(NL[t]+off,N[i+t][1]); if(p) c.lineTo(p[0],p[1]); }
+            if(poleZ){
+              p=pt(NL[z2]+off,poleZ); if(p) c.lineTo(p[0],p[1]);
+              p=pt(SL[z2]+off,poleZ); if(p) c.lineTo(p[0],p[1]);
+            }
+            for(let t=z2;t>=a2;t--){ p=pt(SL[t]+off,S[i+t][1]); if(p) c.lineTo(p[0],p[1]); }
+            if(poleA){
+              p=pt(SL[a2]+off,poleA); if(p) c.lineTo(p[0],p[1]);
+              p=pt(NL[a2]+off,poleA); if(p) c.lineTo(p[0],p[1]);
+            }
+            c.closePath(); any=true;
+          }
+        }
       }
     }
     i=b+1;
@@ -1159,6 +1227,7 @@ let ptrs=new Map(), gest=null, moved=0, settle=0;
 function endLight(){ clearTimeout(settle);
   settle=setTimeout(()=>{light=false;dirty=true;draw();},110); }
 cv.addEventListener('pointerdown',e=>{
+  if(e.button!==0) return;        // le clic droit est traite par 'contextmenu'
   cv.setPointerCapture(e.pointerId); ptrs.set(e.pointerId,localXY(e));
   if(ptrs.size===1){const [x,y]=ptrs.get(e.pointerId); moved=0;
     gest={x,y,lam:rot.lam,phi:rot.phi,px:pan.x,py:pan.y};
@@ -1203,6 +1272,7 @@ let lastTap={t:0,i:-1}, presse=0, pince=false;
    ne s'affiche: un pincement, meme entame lentement, ne peut donc plus ouvrir
    la fiche, et celle-ci ne peut plus se placer sous le second doigt. */
 function up(e){
+  if(e.button!==0 && !ptrs.has(e.pointerId)) return;
   const seul=ptrs.size===1;
   ptrs.delete(e.pointerId);
   if(!ptrs.size && pince){ pince=false; gest=null; endLight(); return; }

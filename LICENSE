@@ -1,0 +1,68 @@
+Sur la trace des éclipses — CGExcel
+Copyright (c) 2026 Cyrille Gindre / CGExcel
+
+Ce logiciel est distribué sous deux licences complémentaires : la licence MIT,
+qui seule a valeur juridique, et la BAL 1.0, qui n'est qu'un vœu sur l'honneur.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+LICENCE MIT
+═══════════════════════════════════════════════════════════════════════════════
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+BAL 1.0 — BONNE ACTION LICENSE
+═══════════════════════════════════════════════════════════════════════════════
+
+Ce logiciel vous est donné. Vous pouvez l'utiliser, le copier, le modifier et
+le partager librement, aux conditions de la licence MIT ci-dessus, qui est la
+seule à vous engager en droit.
+
+En échange, une seule chose vous est demandée, sur l'honneur : faire une bonne
+action chaque jour. Aider un voisin, sourire à un inconnu, ramasser un
+papier… c'est vous qui voyez.
+
+Ce vœu ne crée aucune obligation juridique, ne conditionne aucun des droits
+accordés par la licence MIT, et son inexécution ne saurait fonder la moindre
+réclamation. Il ne restreint en rien l'usage du logiciel, y compris commercial.
+Il ne tient qu'à votre conscience — et c'est bien ainsi.
+
+Vous êtes invité à transmettre ce vœu avec le logiciel, pour que chacun de ses
+usagers sache ce qu'on attend de lui.
+
+
+═══════════════════════════════════════════════════════════════════════════════
+DONNÉES ET RESSOURCES DE TIERS
+═══════════════════════════════════════════════════════════════════════════════
+
+Les éclipses sont calculées, non reprises d'un catalogue existant. Les
+ressources suivantes sont incorporées à l'application :
+
+· Fond de carte — Natural Earth, 1:50 M (domaine public).
+· Villes — GeoNames, licence Creative Commons Attribution 4.0
+  (https://www.geonames.org/).
+· Fuseaux horaires — tz-lookup (domaine public, CC0), et la base tzdata
+  fournie par le navigateur.
+· Polices — Spectral et IBM Plex Mono, licence SIL Open Font License 1.1.
+
+Les théories planétaires VSOP87 (Bretagnon et Francou) et lunaire ELP-2000/82
+(Chapront-Touzé et Chapront) sont des travaux publiés dans la littérature
+scientifique, mis en œuvre ici par la bibliothèque PyEphem.
