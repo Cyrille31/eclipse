@@ -2,9 +2,23 @@
    Stratégie: on sert d'abord la copie locale, puis on rafraîchit en arrière-plan.
    L'application s'ouvre donc instantanément et sans réseau ; une version
    nouvellement publiée est prise en compte au chargement suivant. */
-var CACHE = 'eclipses-v2.9';
+var CACHE = 'eclipses-v3.0';
 var FICHIERS = ['./', './index.html', './manifest.webmanifest',
-                './icon-192.png', './icon-512.png'];
+                './icon-192.png', './icon-512.png', './icon-maskable-512.png',
+                './confidentialite.html',
+                './fonts/fonts.css',
+                './fonts/ibm-plex-mono-400-latin-ext.woff2',
+                './fonts/ibm-plex-mono-400-latin.woff2',
+                './fonts/ibm-plex-mono-500-latin-ext.woff2',
+                './fonts/ibm-plex-mono-500-latin.woff2',
+                './fonts/spectral-300-italic-latin-ext.woff2',
+                './fonts/spectral-300-italic-latin.woff2',
+                './fonts/spectral-300-latin-ext.woff2',
+                './fonts/spectral-300-latin.woff2',
+                './fonts/spectral-400-latin-ext.woff2',
+                './fonts/spectral-400-latin.woff2',
+                './fonts/spectral-600-latin-ext.woff2',
+                './fonts/spectral-600-latin.woff2'];
 
 self.addEventListener('install', function (e) {
   e.waitUntil(
@@ -28,7 +42,7 @@ self.addEventListener('activate', function (e) {
 self.addEventListener('fetch', function (e) {
   var r = e.request;
   if (r.method !== 'GET') return;
-  if (new URL(r.url).origin !== location.origin) return;   // polices distantes: on laisse passer
+  if (new URL(r.url).origin !== location.origin) return;   // ressources externes: on laisse passer
   e.respondWith(
     caches.match(r).then(function (copie) {
       var reseau = fetch(r).then(function (rep) {
