@@ -8,7 +8,8 @@ Ce dossier rassemble tout ce qu'il faut pour publier l'application sur Google Pl
 | Politique de confidentialité | `../confidentialite.html` → https://cyrille31.github.io/eclipse/confidentialite.html |
 | Textes de la fiche Play | ci-dessous |
 | Captures d'écran (1082×1922) | `captures/` |
-| Propositions de nouveau logo | `propositions-logo/` (`planche.png` pour comparer) |
+| Image de présentation (1024×500) | `image-presentation-1024x500.png` |
+| Logo retenu (A) et autres propositions | `../icon.svg`, `propositions-logo/` |
 | Contenu du dépôt `cyrille31.github.io` | `depot-cyrille31.github.io/` |
 
 ---
@@ -62,8 +63,8 @@ Ce dossier rassemble tout ce qu'il faut pour publier l'application sur Google Pl
 - **Coordonnées** : e-mail `cgexcel.31@gmail.com` ; site `https://cyrille31.github.io/eclipse/`.
 
 ### 5. Fiche Play Store (*Croissance → Présence sur le Play Store → Fiche principale*)
-- Icône 512×512 : `../icon-512.png` (ou le nouveau logo choisi).
-- Image de présentation 1024×500 : à produire une fois le logo choisi.
+- Icône 512×512 : `../icon-512.png`.
+- Image de présentation 1024×500 : `image-presentation-1024x500.png`.
 - Captures de téléphone : les 4 fichiers de `captures/`.
 - Textes : voir ci-dessous.
 
@@ -123,5 +124,5 @@ supérieur) que pour changer le nom, l'icône, les couleurs ou les réglages And
 
 **Notes de version 3.0**
 
-> Première version publiée sur Google Play. Polices intégrées : l'application fonctionne
-> désormais entièrement hors ligne, sans aucune connexion à des services tiers.
+> Première version publiée sur Google Play. Nouvelle icône. Polices intégrées : l'application
+> fonctionne désormais entièrement hors ligne, sans aucune connexion à des services tiers.

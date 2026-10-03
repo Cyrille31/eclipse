@@ -4,7 +4,8 @@
    nouvellement publiée est prise en compte au chargement suivant. */
 var CACHE = 'eclipses-v3.0';
 var FICHIERS = ['./', './index.html', './manifest.webmanifest',
-                './icon-192.png', './icon-512.png', './confidentialite.html',
+                './icon-192.png', './icon-512.png', './icon-maskable-512.png',
+                './confidentialite.html',
                 './fonts/fonts.css',
                 './fonts/ibm-plex-mono-400-latin-ext.woff2',
                 './fonts/ibm-plex-mono-400-latin.woff2',
