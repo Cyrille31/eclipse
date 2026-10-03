@@ -120,9 +120,67 @@ supérieur) que pour changer le nom, l'icône, les couleurs ou les réglages And
 > de vos ancêtres ?), les enseignants, et tous ceux qui préparent déjà leur prochain voyage
 > sous l'ombre de la Lune.
 >
+> Disponible en français et en anglais.
+>
 > Conçue par CGExcel. Licence libre MIT.
 
 **Notes de version 3.0**
 
-> Première version publiée sur Google Play. Nouvelle icône. Polices intégrées : l'application
-> fonctionne désormais entièrement hors ligne, sans aucune connexion à des services tiers.
+> Première version publiée sur Google Play. Nouvelle icône, interface disponible en anglais.
+> Polices intégrées : l'application fonctionne désormais entièrement hors ligne, sans aucune
+> connexion à des services tiers.
+
+---
+
+## Fiche en anglais (facultatif mais recommandé)
+
+L'application ayant désormais une interface anglaise, ajoutez une traduction de la fiche :
+*Présence sur le Play Store → Fiche principale → Gérer les traductions → Ajouter vos propres
+traductions → English (United States) – en-US* (et éventuellement en-GB). Les images peuvent être
+les mêmes.
+
+**App name**
+
+> On the Trail of Eclipses
+
+**Short description**
+
+> Atlas of total solar eclipse paths from the year 1000 to the year 3000.
+
+**Full description**
+
+> On the Trail of Eclipses is an interactive atlas of every path of totality of solar eclipses
+> (total and hybrid) that has swept or will sweep across the Earth between the years 1000 and 3000.
+>
+> Each path is drawn at its true width. Where the Moon's shadow has passed several times, the inks
+> overlap: you can see at a glance which regions of the world are most often plunged into night
+> in broad daylight.
+>
+> ◆ FLAT MAP AND GLOBE
+> Switch between a world map and a globe you spin with your finger. Zoom down to about 2 km to
+> find out whether your town was — or will be — inside the path.
+>
+> ◆ THE ECLIPSE COMB
+> A timeline where the height of each line shows the duration of totality. Pick a century or the
+> whole period, tap an eclipse and its track appears on the map.
+>
+> ◆ FOR EACH ECLIPSE
+> Date, central duration, path width, point of greatest eclipse and type (total or hybrid). Long
+> press anywhere to see what an observer would have seen there: time, duration of totality,
+> fraction of the Sun covered, Sun altitude and azimuth.
+>
+> ◆ OFFLINE, AD-FREE, NO DATA COLLECTION
+> All calculations run on your device, using a deterministic astronomical calculation. No account,
+> no permissions, no trackers. The app works entirely without a connection.
+>
+> Available in French and English.
+>
+> For astronomy enthusiasts, history buffs (which eclipse darkened your ancestors' sky?),
+> teachers, and everyone already planning their next trip under the Moon's shadow.
+>
+> Designed by CGExcel. Free software, MIT licence.
+
+**Release notes 3.0**
+
+> First release on Google Play. New icon, English interface, embedded fonts: the app now works
+> entirely offline, without any connection to third-party services.
