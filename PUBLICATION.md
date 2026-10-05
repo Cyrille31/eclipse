@@ -77,6 +77,24 @@ Au premier lancement (§2), Bubblewrap pose deux questions :
 
 Ces téléchargements prennent plusieurs minutes. Ils ne se font qu'une fois.
 
+### 1.4 ⚠️ Windows : remplacer la Java 32 bits par une Java 64 bits
+Sous Windows, Bubblewrap télécharge une Java **32 bits**. Elle ne peut pas réserver la mémoire
+qu'exige la compilation Android, et `bubblewrap build` échoue avec :
+`Could not reserve enough space for 1572864KB object heap`.
+
+Le remède, à faire une seule fois :
+1. Installez **Temurin 17, Windows x64, JDK, fichier `.msi`** depuis
+   https://adoptium.net/temurin/releases/?version=17&os=windows&arch=x64&package=jdk.
+   Il faut exactement la version **17** : Bubblewrap refuse les autres.
+2. Notez le dossier d'installation, par exemple
+   `C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot`.
+3. Indiquez-le à Bubblewrap, puis vérifiez :
+   ```
+   bubblewrap updateConfig --jdkPath="C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot"
+   bubblewrap doctor
+   ```
+Le dossier `C:\Users\<vous>\.bubblewrap\jdk` (la Java 32 bits) peut ensuite être supprimé.
+
 ---
 
 ## 2. Créer le projet Android (une seule fois)
