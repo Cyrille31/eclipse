@@ -36,7 +36,12 @@
   "fullScopeUrl": "https://cyrille31.github.io/eclipse/",
   "minSdkVersion": 21,
   "orientation": "any",
-  "fingerprints": [],
+  "fingerprints": [
+    {
+      "name": "importation",
+      "value": "AE:12:04:2E:DF:DF:68:15:75:3D:90:95:0E:96:62:7F:2A:B8:7B:BD:F8:06:94:63:22:DE:BB:40:44:42:9C:75"
+    }
+  ],
   "additionalTrustedOrigins": [],
   "retainedBundles": [],
   "protocolHandlers": [],
