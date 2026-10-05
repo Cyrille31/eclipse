@@ -77,23 +77,29 @@ Au premier lancement (§2), Bubblewrap pose deux questions :
 
 Ces téléchargements prennent plusieurs minutes. Ils ne se font qu'une fois.
 
-### 1.4 ⚠️ Windows : remplacer la Java 32 bits par une Java 64 bits
-Sous Windows, Bubblewrap télécharge une Java **32 bits**. Elle ne peut pas réserver la mémoire
-qu'exige la compilation Android, et `bubblewrap build` échoue avec :
-`Could not reserve enough space for 1572864KB object heap`.
+### 1.4 ⚠️ Windows : utiliser une Java 64 bits, dans un dossier sans espace
+Sous Windows, Bubblewrap a deux défauts :
+- il télécharge une Java **32 bits**, qui ne peut pas réserver la mémoire qu'exige la compilation
+  Android. `bubblewrap build` échoue alors avec
+  `Could not reserve enough space for 1572864KB object heap` ;
+- il appelle Java sans guillemets. Une Java installée sous `C:\Program Files\…` fait échouer la
+  signature avec `'C:\Program' n'est pas reconnu en tant que commande interne`.
 
 Le remède, à faire une seule fois :
 1. Installez **Temurin 17, Windows x64, JDK, fichier `.msi`** depuis
    https://adoptium.net/temurin/releases/?version=17&os=windows&arch=x64&package=jdk.
    Il faut exactement la version **17** : Bubblewrap refuse les autres.
-2. Notez le dossier d'installation, par exemple
-   `C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot`.
-3. Indiquez-le à Bubblewrap, puis vérifiez :
+2. Copiez-la dans un dossier sans espace (adaptez le numéro de version), puis indiquez-le à Bubblewrap :
    ```
-   bubblewrap updateConfig --jdkPath="C:\Program Files\Eclipse Adoptium\jdk-17.0.17.10-hotspot"
+   xcopy "C:\Program Files\Eclipse Adoptium\jdk-17.0.20.101-hotspot" C:\CGExcel\jdk-17 /E /I /H
+   bubblewrap updateConfig --jdkPath=C:\CGExcel\jdk-17
    bubblewrap doctor
    ```
 Le dossier `C:\Users\<vous>\.bubblewrap\jdk` (la Java 32 bits) peut ensuite être supprimé.
+
+> 🔐 Quand une commande échoue, Bubblewrap peut afficher en clair la commande complète, **mots de passe
+> compris**. Ne partagez jamais une telle capture sans masquer le mot de passe. Si cela arrive, changez
+> le mot de passe (§4).
 
 ---
 
@@ -222,6 +228,13 @@ Bubblewrap peut aussi lancer un contrôle de qualité de la PWA (score Lighthous
 clé USB rangée en lieu sûr et dans un coffre en ligne chiffré. Gardez les mots de passe séparés du
 fichier.
 
+**Changer le mot de passe** (par exemple s'il a été vu). L'empreinte de la clé ne change pas, donc
+rien d'autre n'est à refaire. Le fichier n'a qu'un seul mot de passe, qui protège à la fois le fichier
+et la clé :
+```
+C:\CGExcel\jdk-17\bin\keytool -storepasswd -keystore C:\CGExcel\CGExcel-cles\eclipses-upload.keystore
+```
+
 **Si vous la perdez.** Google Play signe lui-même l'application distribuée (« signature d'application
 par Google Play », obligatoire pour les nouvelles applications). Votre fichier est une **clé
 d'importation** : elle prouve à Google que c'est bien vous qui envoyez une mise à jour. Si vous la
@@ -268,11 +281,9 @@ Chaque commande enregistre l'empreinte dans `twa-manifest.json` et écrit un fic
 à jour dans le dossier.
 
 > **Tester avant d'envoyer quoi que ce soit à Google** : on peut lire l'empreinte de votre clé
-> directement dans le fichier, avec l'outil `keytool` installé par Bubblewrap. Le dossier exact
-> dépend de la version : regardez dans `.bubblewrap/jdk/` de votre dossier personnel.
-> - **Windows** (Invite de commandes) : `dir %USERPROFILE%\.bubblewrap\jdk` donne le nom exact du
->   dossier (par exemple `jdk-17.0.11+9`), puis :
->   `"%USERPROFILE%\.bubblewrap\jdk\jdk-17.0.11+9\bin\keytool.exe" -list -v -keystore C:\CGExcel\CGExcel-cles\eclipses-upload.keystore -alias eclipses`
+> directement dans le fichier, avec l'outil `keytool` fourni avec Java :
+> - **Windows** (Invite de commandes) :
+>   `C:\CGExcel\jdk-17\bin\keytool -list -v -keystore C:\CGExcel\CGExcel-cles\eclipses-upload.keystore -alias eclipses`
 > - **Mac** : `~/.bubblewrap/jdk/jdk-17…/Contents/Home/bin/keytool -list -v -keystore ../CGExcel-cles/eclipses-upload.keystore -alias eclipses`
 >
 > Copiez la ligne `SHA256:`.
