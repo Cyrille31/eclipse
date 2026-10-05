@@ -21,8 +21,8 @@ de masquer la barre d'adresse que si le site « reconnaît » l'application. C'e
 |---|---|---|
 | L'atlas (HTML, données, service worker) | ce dépôt `Cyrille31/eclipse` → GitHub Pages | oui |
 | Configuration de référence de l'appli Android | `android/twa-manifest.json` (ce dépôt) | oui, sans aucun secret |
-| Projet Android complet généré par Bubblewrap | votre ordinateur : `Documents/eclipses-android/` | **non** |
-| **Clé de signature** (`eclipses-upload.keystore`) | votre ordinateur : `Documents/CGExcel-cles/` | **JAMAIS** |
+| Projet Android complet généré par Bubblewrap | votre ordinateur : `C:\CGExcel\eclipses-android\` | **non** |
+| **Clé de signature** (`eclipses-upload.keystore`) | votre ordinateur : `C:\CGExcel\CGExcel-cles\` | **JAMAIS** |
 | Mots de passe de la clé | votre gestionnaire de mots de passe | **JAMAIS** |
 | `assetlinks.json` | dépôt `Cyrille31/cyrille31.github.io`, dossier `.well-known/` | oui (c'est public par nature) |
 
@@ -47,7 +47,9 @@ Bubblewrap est un programme écrit en JavaScript, qui fonctionne avec **Node.js*
 Téléchargez la version **LTS** sur https://nodejs.org et installez-la avec les options par défaut.
 
 Ouvrez ensuite un **terminal** :
-- **Windows** : menu Démarrer, tapez « PowerShell », ouvrez *Windows PowerShell* ;
+- **Windows 11** : menu Démarrer, tapez « **cmd** », ouvrez l'**Invite de commandes**. Préférez-la à
+  PowerShell : sous Windows 11, PowerShell bloque par défaut les scripts comme `bubblewrap`
+  (erreur « l'exécution de scripts est désactivée sur ce système ») ;
 - **Mac** : application *Terminal*.
 
 Vérifiez l'installation :
@@ -80,18 +82,26 @@ Ces téléchargements prennent plusieurs minutes. Ils ne se font qu'une fois.
 ## 2. Créer le projet Android (une seule fois)
 
 ### 2.1 Créer deux dossiers séparés
-Dans vos **Documents**, créez :
+Créez un dossier `C:\CGExcel` et, dedans :
 - `eclipses-android` : le projet Android, que l'on peut régénérer à tout moment ;
 - `CGExcel-cles` : la clé de signature, **précieuse**.
+
+Dans l'Invite de commandes :
+```
+mkdir C:\CGExcel\eclipses-android
+mkdir C:\CGExcel\CGExcel-cles
+```
+Pourquoi pas dans *Documents* ? Sous Windows 11, *Documents* est souvent synchronisé par OneDrive.
+La compilation Android y est lente et peut échouer sur des fichiers verrouillés, et la clé partirait
+dans le nuage sans que vous l'ayez décidé. Les chemins sans espaces évitent aussi des erreurs.
 
 Ils sont volontairement séparés : vous pourrez effacer ou recréer le projet sans jamais risquer la clé.
 
 ### 2.2 Lancer l'assistant
 Dans le terminal, placez-vous dans le dossier du projet :
 ```
-cd Documents/eclipses-android
+cd C:\CGExcel\eclipses-android
 ```
-(sous Windows : `cd $HOME\Documents\eclipses-android`)
 
 Puis lancez :
 ```
@@ -120,7 +130,7 @@ Appuyez sur **Entrée** pour accepter une valeur proposée, ou tapez la valeur i
 | Monochrome icon URL: | laisser vide, **Entrée** |
 | Include support for Play Billing? | **No** (pas de paiement) |
 | Request geolocation permission? | **No** (l'atlas n'utilise pas la position) |
-| Key store location: | `../CGExcel-cles/eclipses-upload.keystore` |
+| Key store location: | `C:\CGExcel\CGExcel-cles\eclipses-upload.keystore` |
 | Key name: | `eclipses` |
 | Do you want to create one now? | **Yes** |
 | First and Last names: | `Cyrille Gindre` |
@@ -180,7 +190,7 @@ Bubblewrap peut aussi lancer un contrôle de qualité de la PWA (score Lighthous
 
 ## 4. La clé de signature : où elle est, et pourquoi la sauvegarder
 
-- **Emplacement** : `Documents/CGExcel-cles/eclipses-upload.keystore`, alias `eclipses`.
+- **Emplacement** : `C:\CGExcel\CGExcel-cles\eclipses-upload.keystore`, alias `eclipses`.
 - **Mots de passe** : dans votre gestionnaire de mots de passe.
 - **Elle n'est pas dans le dépôt, et ne doit jamais y aller.** Le fichier `.gitignore` du dépôt
   refuse en plus les fichiers `*.keystore`, `*.jks`, `*.aab` et `*.apk`. C'est un filet de sécurité :
@@ -240,7 +250,9 @@ Chaque commande enregistre l'empreinte dans `twa-manifest.json` et écrit un fic
 > **Tester avant d'envoyer quoi que ce soit à Google** : on peut lire l'empreinte de votre clé
 > directement dans le fichier, avec l'outil `keytool` installé par Bubblewrap. Le dossier exact
 > dépend de la version : regardez dans `.bubblewrap/jdk/` de votre dossier personnel.
-> - **Windows** : `& "$HOME\.bubblewrap\jdk\jdk-17…\bin\keytool.exe" -list -v -keystore ..\CGExcel-cles\eclipses-upload.keystore -alias eclipses`
+> - **Windows** (Invite de commandes) : `dir %USERPROFILE%\.bubblewrap\jdk` donne le nom exact du
+>   dossier (par exemple `jdk-17.0.11+9`), puis :
+>   `"%USERPROFILE%\.bubblewrap\jdk\jdk-17.0.11+9\bin\keytool.exe" -list -v -keystore C:\CGExcel\CGExcel-cles\eclipses-upload.keystore -alias eclipses`
 > - **Mac** : `~/.bubblewrap/jdk/jdk-17…/Contents/Home/bin/keytool -list -v -keystore ../CGExcel-cles/eclipses-upload.keystore -alias eclipses`
 >
 > Copiez la ligne `SHA256:`.
@@ -356,7 +368,7 @@ Les textes et images de la **fiche** du Store (descriptions, captures) se modifi
 la Play Console, sans republier l'application.
 
 ### Procédure de republication
-Dans `Documents/eclipses-android` :
+Dans `C:\CGExcel\eclipses-android` :
 
 1. **Mettre Bubblewrap à jour.** C'est indispensable pour la mise à niveau annuelle, car il intègre
    les exigences récentes de Google :
@@ -383,8 +395,8 @@ Dans `Documents/eclipses-android` :
 
 ### Si vous changez d'ordinateur
 Installez Node.js et Bubblewrap (§1), récupérez **la clé** depuis votre sauvegarde dans
-`Documents/CGExcel-cles/`, recopiez `android/twa-manifest.json` dans un nouveau dossier
-`Documents/eclipses-android/`, puis lancez :
+`C:\CGExcel\CGExcel-cles\`, recopiez `android/twa-manifest.json` dans un nouveau dossier
+`C:\CGExcel\eclipses-android\`, puis lancez :
 ```
 bubblewrap update --skipVersionUpgrade
 ```
