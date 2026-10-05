@@ -181,6 +181,7 @@ Bloc-notes (Windows) ou TextEdit (Mac, en mode texte brut) et modifiez ces ligne
 | `"appVersion": "1"` (**dernière ligne**, sans virgule) | `"appVersion": "3.0"` | ⚠️ C'est **cette** ligne que Bubblewrap lit réellement pour le nom de version ; `appVersionName` seul ne suffit pas. |
 | `"navigationDividerColor": "#000000",` et `…Dark` | `"#DEDCD2"` | Facultatif : supprime le filet noir au-dessus de la barre de navigation. |
 | `"enableNotifications": true,` | `"enableNotifications": false,` | L'atlas n'envoie pas de notifications : on évite une permission inutile. |
+| `"minSdkVersion": 21,` | `"minSdkVersion": 24,` | La « protection automatique » de Google Play (active par défaut) refuse les AAB qui acceptent Android < 7.0. |
 | `"themeColorDark": "#000000",` | `"themeColorDark": "#DEDCD2",` | Couleur de la barre d'état quand le téléphone est en mode sombre. |
 | `"navigationColor": "#000000",` | `"navigationColor": "#DEDCD2",` | Barre de navigation Android, en bas de l'écran. |
 | `"navigationColorDark": "#000000",` | `"navigationColorDark": "#DEDCD2",` | La même, en mode sombre. |
