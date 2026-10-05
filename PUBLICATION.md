@@ -34,7 +34,7 @@ Valeurs fixées une fois pour toutes :
 | Nom de l'application | `Sur la trace des éclipses` |
 | Nom court (sous l'icône) | `Éclipses` |
 | Couleurs (barre d'état, fond de l'écran de démarrage, barre de navigation) | `#DEDCD2`, le papier de l'atlas |
-| Première version | `versionCode` 1, `versionName` 1.0.0 |
+| Première version | `versionCode` 1, `versionName` 3.0 (même numéro que l'atlas) |
 | Alias de la clé | `eclipses` |
 | Politique de confidentialité | https://cyrille31.github.io/eclipse/confidentialite.html |
 
@@ -147,13 +147,15 @@ de ce dépôt.
 À la fin, le dossier `eclipses-android` contient le projet Android. Le dossier `CGExcel-cles` contient
 `eclipses-upload.keystore` : c'est **votre clé**.
 
-### 2.4 Trois réglages à corriger à la main
+### 2.4 Réglages à corriger à la main
 L'assistant ne pose pas toutes les questions. Ouvrez `eclipses-android/twa-manifest.json` avec le
 Bloc-notes (Windows) ou TextEdit (Mac, en mode texte brut) et modifiez ces lignes :
 
 | Ligne générée | À remplacer par | Pourquoi |
 |---|---|---|
-| `"appVersionName": "1",` | `"appVersionName": "1.0.0",` | Bubblewrap recopie le code de version (1) comme nom de version. |
+| `"appVersionName": "1",` | `"appVersionName": "3.0",` | Nom de version visible sur le Play Store. |
+| `"appVersion": "1"` (**dernière ligne**, sans virgule) | `"appVersion": "3.0"` | ⚠️ C'est **cette** ligne que Bubblewrap lit réellement pour le nom de version ; `appVersionName` seul ne suffit pas. |
+| `"navigationDividerColor": "#000000",` et `…Dark` | `"#DEDCD2"` | Facultatif : supprime le filet noir au-dessus de la barre de navigation. |
 | `"enableNotifications": true,` | `"enableNotifications": false,` | L'atlas n'envoie pas de notifications : on évite une permission inutile. |
 | `"themeColorDark": "#000000",` | `"themeColorDark": "#DEDCD2",` | Couleur de la barre d'état quand le téléphone est en mode sombre. |
 | `"navigationColor": "#000000",` | `"navigationColor": "#DEDCD2",` | Barre de navigation Android, en bas de l'écran. |
@@ -347,7 +349,8 @@ toute seule sur les téléphones**, sans passer par le Play Store :
    Elle l'affiche au lancement d'après, ou recharge d'elle-même si le service worker a changé.
 
 Le numéro « version 3.0 » affiché dans l'atlas est celui du **site**. Il est indépendant du
-`versionName` Android (1.0.0), qui ne change qu'avec une republication.
+`versionName` Android (3.0 pour la première publication), qui ne change qu'avec une republication :
+les deux peuvent donc diverger avec le temps.
 
 ---
 
@@ -380,13 +383,14 @@ Dans `C:\CGExcel\eclipses-android` :
    est donc prise en compte. Le nom, les couleurs et les autres réglages, eux, se lisent uniquement
    dans `twa-manifest.json` : modifiez-les là, avant de lancer la commande.
    ```
-   bubblewrap update --appVersionName=1.0.1
+   bubblewrap update --appVersionName=3.0.1
    ```
    - `versionCode` est **augmenté automatiquement de 1** (1 → 2 → 3…). Google Play refuse tout envoi
      dont le `versionCode` n'est pas strictement supérieur au précédent. Ne le diminuez jamais, ne le
      réutilisez jamais.
-   - `versionName` est le numéro visible par les utilisateurs. Convention : `1.0.1` pour une
-     correction, `1.1.0` pour une évolution, `2.0.0` pour un changement majeur.
+   - `versionName` est le numéro visible par les utilisateurs. Convention : `3.0.1` pour une
+     correction, `3.1` pour une évolution, `4.0` pour un changement majeur. Rien n'oblige à le
+     faire correspondre au numéro affiché dans l'atlas, mais c'est plus lisible.
 3. **Construire** : `bubblewrap build`, avec **la même clé** (`CGExcel-cles/eclipses-upload.keystore`).
 4. **Envoyer** : Play Console → *Production* (ou d'abord *Test interne*) → *Créer une version* →
    envoyer le nouvel `app-release-bundle.aab` → notes de version → *Envoyer pour examen*.

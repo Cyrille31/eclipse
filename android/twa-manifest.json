@@ -8,8 +8,8 @@
   "themeColorDark": "#DEDCD2",
   "navigationColor": "#DEDCD2",
   "navigationColorDark": "#DEDCD2",
-  "navigationDividerColor": "#B4B2A6",
-  "navigationDividerColorDark": "#B4B2A6",
+  "navigationDividerColor": "#DEDCD2",
+  "navigationDividerColorDark": "#DEDCD2",
   "backgroundColor": "#DEDCD2",
   "enableNotifications": false,
   "startUrl": "/eclipse/",
@@ -17,10 +17,10 @@
   "maskableIconUrl": "https://cyrille31.github.io/eclipse/icon-maskable-512.png",
   "splashScreenFadeOutDuration": 300,
   "signingKey": {
-    "path": "../CGExcel-cles/eclipses-upload.keystore",
+    "path": "C:\\CGExcel\\CGExcel-cles\\eclipses-upload.keystore",
     "alias": "eclipses"
   },
-  "appVersionName": "1.0.0",
+  "appVersionName": "3.0",
   "appVersionCode": 1,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
@@ -43,5 +43,5 @@
   "fileHandlers": [],
   "launchHandlerClientMode": "",
   "displayOverride": [],
-  "appVersion": "1.0.0"
+  "appVersion": "3.0"
 }
