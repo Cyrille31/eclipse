@@ -1580,6 +1580,10 @@ if('serviceWorker' in navigator && location.protocol==='https:'){
   window.addEventListener('load',function(){
     var deja = !!navigator.serviceWorker.controller;
     navigator.serviceWorker.register('./sw.js').catch(function(){});
+    /* Stockage persistant : sans lui, Android peut vider le cache quand la
+       mémoire manque, et l'atlas redemanderait le réseau en pleine campagne. */
+    if(navigator.storage && navigator.storage.persist)
+      navigator.storage.persist().catch(function(){});
     var recharge=false;
     navigator.serviceWorker.addEventListener('controllerchange',function(){
       if(deja && !recharge){ recharge=true; location.reload(); }

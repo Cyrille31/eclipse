@@ -1,0 +1,18 @@
+# Sécurité : ne jamais publier la clé de signature Android ni ses mots de passe.
+# (La clé doit de toute façon rester HORS de ce dépôt ; ceci n'est qu'un filet de sécurité.)
+*.keystore
+*.jks
+android-keystore
+keystore.properties
+signing-key-info.txt
+*.p12
+*.pem
+
+# Fichiers produits par Bubblewrap / Gradle : ils se régénèrent, inutile de les publier.
+*.aab
+*.apk
+*.idsig
+.gradle/
+build/
+local.properties
+manifest-checksum.txt

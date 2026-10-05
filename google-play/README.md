@@ -10,42 +10,17 @@ Ce dossier rassemble tout ce qu'il faut pour publier l'application sur Google Pl
 | Captures d'écran (1082×1922) | `captures/` |
 | Image de présentation (1024×500) | `image-presentation-1024x500.png` |
 | Logo retenu (A) et autres propositions | `../icon.svg`, `propositions-logo/` |
-| Contenu du dépôt `cyrille31.github.io` | `depot-cyrille31.github.io/` |
+| Modèle `assetlinks.json` pour `cyrille31.github.io` | `depot-cyrille31.github.io/` (voir `../PUBLICATION.md` §6) |
 
 ---
 
 ## Étapes
 
-### 1. Générer l'application Android avec PWABuilder
-1. Ouvrir https://www.pwabuilder.com et saisir `https://cyrille31.github.io/eclipse/`.
-2. *Package for stores* → **Android** → *Generate Package*. Dans les options :
-   - **Package ID** : `fr.cgexcel.eclipses` (définitif, ne pourra jamais changer) ;
-   - **App name** : `Sur la trace des éclipses` ; **Short name** : `Éclipses` ;
-   - **Version code** : `1` ; **Version name** : `3.0` ;
-   - **Signing key** : *Create new* ; renseigner « CGExcel » comme organisation.
-3. Télécharger le zip. Il contient :
-   - `*.aab` → le fichier à envoyer sur Google Play ;
-   - `signing.keystore` + `signing-key-info.txt` → **à sauvegarder en lieu sûr (2 copies au moins)** ;
-   - `assetlinks.json` → contient l'empreinte de votre clé (« clé d'import »).
+La procédure complète (Bubblewrap, clé de signature, assetlinks.json, test sur téléphone, mises à
+jour) est décrite dans **[`../PUBLICATION.md`](../PUBLICATION.md)**. Ce dossier ne contient plus que
+les éléments de la fiche du Store et les réponses aux questionnaires de la Play Console.
 
-### 2. Créer le dépôt `cyrille31.github.io`
-1. Sur GitHub, créer un dépôt **public** nommé exactement `cyrille31.github.io`.
-2. Y déposer le contenu de `depot-cyrille31.github.io/` (y compris `.nojekyll`, fichier caché).
-3. Dans `.well-known/assetlinks.json`, remplacer `REMPLACER_PAR_EMPREINTE_CLE_D_IMPORT_PWABUILDER`
-   par l'empreinte SHA-256 du `assetlinks.json` fourni par PWABuilder.
-4. *Settings → Pages* : source = branche `main`, dossier `/`.
-5. Vérifier que https://cyrille31.github.io/.well-known/assetlinks.json s'affiche.
-
-### 3. Créer l'application dans la Play Console
-1. *Créer une application* : nom `Sur la trace des éclipses`, langue par défaut **français**,
-   type **Application**, **Gratuite**.
-2. *Tester et publier → Tests → Test interne* : créer une version, accepter **la signature
-   d'application par Google Play**, envoyer le `.aab`.
-3. *Tester et publier → Configuration → Intégrité de l'application → Signature de l'application* :
-   copier l'**empreinte SHA-256 de la clé de signature d'application** et la coller à la place de
-   `REMPLACER_PAR_EMPREINTE_CLE_DE_SIGNATURE_GOOGLE_PLAY` dans `assetlinks.json`.
-4. Ajouter votre adresse Gmail comme testeur interne, installer l'appli depuis le lien de test et
-   vérifier qu'**aucune barre d'adresse** n'apparaît (sinon : `assetlinks.json` incorrect).
+Nom de paquet : `io.github.cyrille31.eclipses`.
 
 ### 4. Remplir le tableau de bord « Configurer l'application »
 - **Règles de confidentialité** : `https://cyrille31.github.io/eclipse/confidentialite.html`
@@ -69,14 +44,7 @@ Ce dossier rassemble tout ce qu'il faut pour publier l'application sur Google Pl
 - Textes : voir ci-dessous.
 
 ### 6. Production
-*Tester et publier → Production → Créer une version* : reprendre le même `.aab` (bouton
-« Ajouter depuis la bibliothèque »), choisir les pays (tous), puis **Envoyer pour examen**.
-Premier examen : de quelques jours à une semaine.
-
-### Mises à jour
-Toute modification publiée sur GitHub Pages apparaît automatiquement dans l'application
-(au lancement suivant). Il ne faut regénérer un `.aab` (avec la **même clé** et un *version code*
-supérieur) que pour changer le nom, l'icône, les couleurs ou les réglages Android.
+Voir `../PUBLICATION.md`, §8 à §10.
 
 ---
 
@@ -113,8 +81,8 @@ supérieur) que pour changer le nom, l'icône, les couleurs ou les réglages And
 >
 > ◆ HORS LIGNE, SANS PUBLICITÉ, SANS COLLECTE DE DONNÉES
 > Tous les calculs sont effectués sur votre appareil, à partir d'un calcul astronomique
-> déterministe. Aucun compte, aucune autorisation, aucun traceur. L'application fonctionne
-> entièrement sans connexion.
+> déterministe. Aucun compte, aucune autorisation, aucun traceur. Après une première ouverture
+> connectée, l'application fonctionne entièrement sans réseau, idéal sur le terrain.
 >
 > Pour les passionnés d'astronomie, les curieux d'histoire (quelle éclipse a assombri le ciel
 > de vos ancêtres ?), les enseignants, et tous ceux qui préparent déjà leur prochain voyage
@@ -171,7 +139,8 @@ les mêmes.
 >
 > ◆ OFFLINE, AD-FREE, NO DATA COLLECTION
 > All calculations run on your device, using a deterministic astronomical calculation. No account,
-> no permissions, no trackers. The app works entirely without a connection.
+> no permissions, no trackers. After a first launch with a connection, the app works entirely
+> offline, perfect in the field.
 >
 > Available in French and English.
 >
