@@ -40,6 +40,10 @@
     {
       "name": "importation",
       "value": "AE:12:04:2E:DF:DF:68:15:75:3D:90:95:0E:96:62:7F:2A:B8:7B:BD:F8:06:94:63:22:DE:BB:40:44:42:9C:75"
+    },
+    {
+      "name": "google-play",
+      "value": "E8:B2:04:67:F2:7B:0F:DF:A0:32:C2:EE:54:80:50:E1:9C:8D:8B:FB:A5:4D:E2:58:14:D0:9B:79:9F:B9:69:95"
     }
   ],
   "additionalTrustedOrigins": [],
