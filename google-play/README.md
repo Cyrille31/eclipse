@@ -7,7 +7,7 @@ Ce dossier rassemble tout ce qu'il faut pour publier l'application sur Google Pl
 |---|---|
 | Politique de confidentialité | `../confidentialite.html` → https://cyrille31.github.io/eclipse/confidentialite.html |
 | Textes de la fiche Play | ci-dessous |
-| Captures d'écran (1082×1922) | `captures/` |
+| Captures d'écran (1082×1922), FR et EN | `captures/` |
 | Image de présentation (1024×500) | `image-presentation-1024x500.png` |
 | Logo retenu (A) et autres propositions | `../icon.svg`, `propositions-logo/` |
 | Modèle `assetlinks.json` pour `cyrille31.github.io` | `depot-cyrille31.github.io/` (voir `../PUBLICATION.md` §6) |
@@ -40,7 +40,7 @@ Nom de paquet : `io.github.cyrille31.eclipses`.
 ### 5. Fiche Play Store (*Croissance → Présence sur le Play Store → Fiche principale*)
 - Icône 512×512 : `../icon-512.png`.
 - Image de présentation 1024×500 : `image-presentation-1024x500.png`.
-- Captures de téléphone : les 4 fichiers de `captures/`.
+- Captures de téléphone : les 4 fichiers `captures/fr-*.png` (fiche française) et `captures/en-*.png` (fiche anglaise).
 - Textes : voir ci-dessous.
 
 ### 6. Production
