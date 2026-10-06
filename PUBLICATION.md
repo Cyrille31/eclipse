@@ -21,8 +21,8 @@ de masquer la barre d'adresse que si le site « reconnaît » l'application. C'e
 |---|---|---|
 | L'atlas (HTML, données, service worker) | ce dépôt `Cyrille31/eclipse` → GitHub Pages | oui |
 | Configuration de référence de l'appli Android | `android/twa-manifest.json` (ce dépôt) | oui, sans aucun secret |
-| Projet Android complet généré par Bubblewrap | votre ordinateur : `Documents/eclipses-android/` | **non** |
-| **Clé de signature** (`eclipses-upload.keystore`) | votre ordinateur : `Documents/CGExcel-cles/` | **JAMAIS** |
+| Projet Android complet généré par Bubblewrap | votre ordinateur : `C:\CGExcel\eclipses-android\` | **non** |
+| **Clé de signature** (`eclipses-upload.keystore`) | votre ordinateur : `C:\CGExcel\CGExcel-cles\` | **JAMAIS** |
 | Mots de passe de la clé | votre gestionnaire de mots de passe | **JAMAIS** |
 | `assetlinks.json` | dépôt `Cyrille31/cyrille31.github.io`, dossier `.well-known/` | oui (c'est public par nature) |
 
@@ -34,7 +34,7 @@ Valeurs fixées une fois pour toutes :
 | Nom de l'application | `Sur la trace des éclipses` |
 | Nom court (sous l'icône) | `Éclipses` |
 | Couleurs (barre d'état, fond de l'écran de démarrage, barre de navigation) | `#DEDCD2`, le papier de l'atlas |
-| Première version | `versionCode` 1, `versionName` 1.0.0 |
+| Première version | `versionCode` 1, `versionName` 3.0 (même numéro que l'atlas) |
 | Alias de la clé | `eclipses` |
 | Politique de confidentialité | https://cyrille31.github.io/eclipse/confidentialite.html |
 
@@ -47,7 +47,9 @@ Bubblewrap est un programme écrit en JavaScript, qui fonctionne avec **Node.js*
 Téléchargez la version **LTS** sur https://nodejs.org et installez-la avec les options par défaut.
 
 Ouvrez ensuite un **terminal** :
-- **Windows** : menu Démarrer, tapez « PowerShell », ouvrez *Windows PowerShell* ;
+- **Windows 11** : menu Démarrer, tapez « **cmd** », ouvrez l'**Invite de commandes**. Préférez-la à
+  PowerShell : sous Windows 11, PowerShell bloque par défaut les scripts comme `bubblewrap`
+  (erreur « l'exécution de scripts est désactivée sur ce système ») ;
 - **Mac** : application *Terminal*.
 
 Vérifiez l'installation :
@@ -75,23 +77,55 @@ Au premier lancement (§2), Bubblewrap pose deux questions :
 
 Ces téléchargements prennent plusieurs minutes. Ils ne se font qu'une fois.
 
+### 1.4 ⚠️ Windows : utiliser une Java 64 bits, dans un dossier sans espace
+Sous Windows, Bubblewrap a deux défauts :
+- il télécharge une Java **32 bits**, qui ne peut pas réserver la mémoire qu'exige la compilation
+  Android. `bubblewrap build` échoue alors avec
+  `Could not reserve enough space for 1572864KB object heap` ;
+- il appelle Java sans guillemets. Une Java installée sous `C:\Program Files\…` fait échouer la
+  signature avec `'C:\Program' n'est pas reconnu en tant que commande interne`.
+
+Le remède, à faire une seule fois :
+1. Installez **Temurin 17, Windows x64, JDK, fichier `.msi`** depuis
+   https://adoptium.net/temurin/releases/?version=17&os=windows&arch=x64&package=jdk.
+   Il faut exactement la version **17** : Bubblewrap refuse les autres.
+2. Copiez-la dans un dossier sans espace (adaptez le numéro de version), puis indiquez-le à Bubblewrap :
+   ```
+   xcopy "C:\Program Files\Eclipse Adoptium\jdk-17.0.20.101-hotspot" C:\CGExcel\jdk-17 /E /I /H
+   bubblewrap updateConfig --jdkPath=C:\CGExcel\jdk-17
+   bubblewrap doctor
+   ```
+Le dossier `C:\Users\<vous>\.bubblewrap\jdk` (la Java 32 bits) peut ensuite être supprimé.
+
+> 🔐 Quand une commande échoue, Bubblewrap peut afficher en clair la commande complète, **mots de passe
+> compris**. Ne partagez jamais une telle capture sans masquer le mot de passe. Si cela arrive, changez
+> le mot de passe (§4).
+
 ---
 
 ## 2. Créer le projet Android (une seule fois)
 
 ### 2.1 Créer deux dossiers séparés
-Dans vos **Documents**, créez :
+Créez un dossier `C:\CGExcel` et, dedans :
 - `eclipses-android` : le projet Android, que l'on peut régénérer à tout moment ;
 - `CGExcel-cles` : la clé de signature, **précieuse**.
+
+Dans l'Invite de commandes :
+```
+mkdir C:\CGExcel\eclipses-android
+mkdir C:\CGExcel\CGExcel-cles
+```
+Pourquoi pas dans *Documents* ? Sous Windows 11, *Documents* est souvent synchronisé par OneDrive.
+La compilation Android y est lente et peut échouer sur des fichiers verrouillés, et la clé partirait
+dans le nuage sans que vous l'ayez décidé. Les chemins sans espaces évitent aussi des erreurs.
 
 Ils sont volontairement séparés : vous pourrez effacer ou recréer le projet sans jamais risquer la clé.
 
 ### 2.2 Lancer l'assistant
 Dans le terminal, placez-vous dans le dossier du projet :
 ```
-cd Documents/eclipses-android
+cd C:\CGExcel\eclipses-android
 ```
-(sous Windows : `cd $HOME\Documents\eclipses-android`)
 
 Puis lancez :
 ```
@@ -120,7 +154,7 @@ Appuyez sur **Entrée** pour accepter une valeur proposée, ou tapez la valeur i
 | Monochrome icon URL: | laisser vide, **Entrée** |
 | Include support for Play Billing? | **No** (pas de paiement) |
 | Request geolocation permission? | **No** (l'atlas n'utilise pas la position) |
-| Key store location: | `../CGExcel-cles/eclipses-upload.keystore` |
+| Key store location: | `C:\CGExcel\CGExcel-cles\eclipses-upload.keystore` |
 | Key name: | `eclipses` |
 | Do you want to create one now? | **Yes** |
 | First and Last names: | `Cyrille Gindre` |
@@ -137,14 +171,17 @@ de ce dépôt.
 À la fin, le dossier `eclipses-android` contient le projet Android. Le dossier `CGExcel-cles` contient
 `eclipses-upload.keystore` : c'est **votre clé**.
 
-### 2.4 Trois réglages à corriger à la main
+### 2.4 Réglages à corriger à la main
 L'assistant ne pose pas toutes les questions. Ouvrez `eclipses-android/twa-manifest.json` avec le
 Bloc-notes (Windows) ou TextEdit (Mac, en mode texte brut) et modifiez ces lignes :
 
 | Ligne générée | À remplacer par | Pourquoi |
 |---|---|---|
-| `"appVersionName": "1",` | `"appVersionName": "1.0.0",` | Bubblewrap recopie le code de version (1) comme nom de version. |
+| `"appVersionName": "1",` | `"appVersionName": "3.0",` | Nom de version visible sur le Play Store. |
+| `"appVersion": "1"` (**dernière ligne**, sans virgule) | `"appVersion": "3.0"` | ⚠️ C'est **cette** ligne que Bubblewrap lit réellement pour le nom de version ; `appVersionName` seul ne suffit pas. |
+| `"navigationDividerColor": "#000000",` et `…Dark` | `"#DEDCD2"` | Facultatif : supprime le filet noir au-dessus de la barre de navigation. |
 | `"enableNotifications": true,` | `"enableNotifications": false,` | L'atlas n'envoie pas de notifications : on évite une permission inutile. |
+| `"minSdkVersion": 21,` | `"minSdkVersion": 24,` | La « protection automatique » de Google Play (active par défaut) refuse les AAB qui acceptent Android < 7.0. |
 | `"themeColorDark": "#000000",` | `"themeColorDark": "#DEDCD2",` | Couleur de la barre d'état quand le téléphone est en mode sombre. |
 | `"navigationColor": "#000000",` | `"navigationColor": "#DEDCD2",` | Barre de navigation Android, en bas de l'écran. |
 | `"navigationColorDark": "#000000",` | `"navigationColorDark": "#DEDCD2",` | La même, en mode sombre. |
@@ -180,7 +217,7 @@ Bubblewrap peut aussi lancer un contrôle de qualité de la PWA (score Lighthous
 
 ## 4. La clé de signature : où elle est, et pourquoi la sauvegarder
 
-- **Emplacement** : `Documents/CGExcel-cles/eclipses-upload.keystore`, alias `eclipses`.
+- **Emplacement** : `C:\CGExcel\CGExcel-cles\eclipses-upload.keystore`, alias `eclipses`.
 - **Mots de passe** : dans votre gestionnaire de mots de passe.
 - **Elle n'est pas dans le dépôt, et ne doit jamais y aller.** Le fichier `.gitignore` du dépôt
   refuse en plus les fichiers `*.keystore`, `*.jks`, `*.aab` et `*.apk`. C'est un filet de sécurité :
@@ -191,6 +228,13 @@ Bubblewrap peut aussi lancer un contrôle de qualité de la PWA (score Lighthous
 **Sauvegardez la clé dès maintenant, en deux exemplaires hors de l'ordinateur**, par exemple sur une
 clé USB rangée en lieu sûr et dans un coffre en ligne chiffré. Gardez les mots de passe séparés du
 fichier.
+
+**Changer le mot de passe** (par exemple s'il a été vu). L'empreinte de la clé ne change pas, donc
+rien d'autre n'est à refaire. Le fichier n'a qu'un seul mot de passe, qui protège à la fois le fichier
+et la clé :
+```
+C:\CGExcel\jdk-17\bin\keytool -storepasswd -keystore C:\CGExcel\CGExcel-cles\eclipses-upload.keystore
+```
 
 **Si vous la perdez.** Google Play signe lui-même l'application distribuée (« signature d'application
 par Google Play », obligatoire pour les nouvelles applications). Votre fichier est une **clé
@@ -238,9 +282,9 @@ Chaque commande enregistre l'empreinte dans `twa-manifest.json` et écrit un fic
 à jour dans le dossier.
 
 > **Tester avant d'envoyer quoi que ce soit à Google** : on peut lire l'empreinte de votre clé
-> directement dans le fichier, avec l'outil `keytool` installé par Bubblewrap. Le dossier exact
-> dépend de la version : regardez dans `.bubblewrap/jdk/` de votre dossier personnel.
-> - **Windows** : `& "$HOME\.bubblewrap\jdk\jdk-17…\bin\keytool.exe" -list -v -keystore ..\CGExcel-cles\eclipses-upload.keystore -alias eclipses`
+> directement dans le fichier, avec l'outil `keytool` fourni avec Java :
+> - **Windows** (Invite de commandes) :
+>   `C:\CGExcel\jdk-17\bin\keytool -list -v -keystore C:\CGExcel\CGExcel-cles\eclipses-upload.keystore -alias eclipses`
 > - **Mac** : `~/.bubblewrap/jdk/jdk-17…/Contents/Home/bin/keytool -list -v -keystore ../CGExcel-cles/eclipses-upload.keystore -alias eclipses`
 >
 > Copiez la ligne `SHA256:`.
@@ -335,7 +379,8 @@ toute seule sur les téléphones**, sans passer par le Play Store :
    Elle l'affiche au lancement d'après, ou recharge d'elle-même si le service worker a changé.
 
 Le numéro « version 3.0 » affiché dans l'atlas est celui du **site**. Il est indépendant du
-`versionName` Android (1.0.0), qui ne change qu'avec une republication.
+`versionName` Android (3.0 pour la première publication), qui ne change qu'avec une republication :
+les deux peuvent donc diverger avec le temps.
 
 ---
 
@@ -356,7 +401,7 @@ Les textes et images de la **fiche** du Store (descriptions, captures) se modifi
 la Play Console, sans republier l'application.
 
 ### Procédure de republication
-Dans `Documents/eclipses-android` :
+Dans `C:\CGExcel\eclipses-android` :
 
 1. **Mettre Bubblewrap à jour.** C'est indispensable pour la mise à niveau annuelle, car il intègre
    les exigences récentes de Google :
@@ -368,13 +413,14 @@ Dans `Documents/eclipses-android` :
    est donc prise en compte. Le nom, les couleurs et les autres réglages, eux, se lisent uniquement
    dans `twa-manifest.json` : modifiez-les là, avant de lancer la commande.
    ```
-   bubblewrap update --appVersionName=1.0.1
+   bubblewrap update --appVersionName=3.0.1
    ```
    - `versionCode` est **augmenté automatiquement de 1** (1 → 2 → 3…). Google Play refuse tout envoi
      dont le `versionCode` n'est pas strictement supérieur au précédent. Ne le diminuez jamais, ne le
      réutilisez jamais.
-   - `versionName` est le numéro visible par les utilisateurs. Convention : `1.0.1` pour une
-     correction, `1.1.0` pour une évolution, `2.0.0` pour un changement majeur.
+   - `versionName` est le numéro visible par les utilisateurs. Convention : `3.0.1` pour une
+     correction, `3.1` pour une évolution, `4.0` pour un changement majeur. Rien n'oblige à le
+     faire correspondre au numéro affiché dans l'atlas, mais c'est plus lisible.
 3. **Construire** : `bubblewrap build`, avec **la même clé** (`CGExcel-cles/eclipses-upload.keystore`).
 4. **Envoyer** : Play Console → *Production* (ou d'abord *Test interne*) → *Créer une version* →
    envoyer le nouvel `app-release-bundle.aab` → notes de version → *Envoyer pour examen*.
@@ -383,8 +429,8 @@ Dans `Documents/eclipses-android` :
 
 ### Si vous changez d'ordinateur
 Installez Node.js et Bubblewrap (§1), récupérez **la clé** depuis votre sauvegarde dans
-`Documents/CGExcel-cles/`, recopiez `android/twa-manifest.json` dans un nouveau dossier
-`Documents/eclipses-android/`, puis lancez :
+`C:\CGExcel\CGExcel-cles\`, recopiez `android/twa-manifest.json` dans un nouveau dossier
+`C:\CGExcel\eclipses-android\`, puis lancez :
 ```
 bubblewrap update --skipVersionUpgrade
 ```
